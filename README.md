@@ -62,15 +62,12 @@ boot, and the page shows a banner listing it.
 
 ## How a lead flows
 
-One stage, three fields, and where each field sits is the whole design. A field
-costs a completely different amount depending on when it is asked: a
-project-description textarea in front of an uncommitted visitor is the most
-expensive field on the internet, and a phone number after they have decided to
-book is nearly free.
+One stage, four fields, all required. A field costs a completely different
+amount depending on when it is asked, and every one of these was argued over.
 
 ```
 THE FORM  hero and final CTA, the same component twice:
-          name / work email / what you want built
+          name / work email / phone / what you want built
           └─ submitEnquiry
              ├─ honeypot + <3s submit → silently dropped
              ├─ rate limit: 5 per 10 min per IP, own budget
@@ -78,7 +75,7 @@ THE FORM  hero and final CTA, the same component twice:
              ├─ emails you the lead + every UTM param
              └─ redirect to /booked?lid=…
 
-EXIT       leaving without submitting → the 10%-off modal, same three fields
+EXIT       leaving without submitting → the 10%-off modal, same four fields
           └─ submitDiscountClaim → same RPC, tagged, + a copy to the claimer
 
 /booked   ─ fires GA4 form_submit + Google Ads conversion (deduped on lead id)
@@ -86,18 +83,23 @@ EXIT       leaving without submitting → the 10%-off modal, same three fields
 
 BOOKING    Calendly custom questions
            a1 lead id (hidden) · a2 description (hidden) ·
-           phone (native, optional — the ONLY place a phone is collected)
+           phone (native, optional — Calendly's own, for SMS reminders)
 ```
 
-**Why there is no phone field on the form.** Three fields is where completion
-peaks and a phone input costs more of them than any other single field. The
-number is collected at booking instead, where it is given by somebody who has
-already committed to a time and where it earns its keep powering the reminder.
-The privacy policy states this, so it has to stay true.
+**Why phone is required.** It has been on and off this form. The case for
+cutting it is real — three fields is where completion peaks, and a phone input
+costs more completions than any other single field — but it optimises for form
+submissions rather than for leads. A page whose whole argument is that whoever
+replies first wins the job cannot then collect leads it can only email.
+Collecting it at booking instead only gets you the numbers of people who book,
+which is not the group worth chasing.
 
 **Why the form asks for a description at all.** It is the expensive field and
 it is required anyway: it is what makes the lead worth calling, and it filters
 anyone who was never going to show up.
+
+**Why business name is not asked.** It is genuinely recoverable on the call,
+and it was also the argument to the RPC that had been failing every insert.
 
 **Why `a1` carries the lead id.** Prefilled fields stay editable. If the
 invitee corrects their email before booking, a join on email breaks silently
@@ -217,9 +219,11 @@ be removed and which undercuts the page at its highest-trust moment.
 > and prefills it into `a2`, so a surviving `a3` asks the same person the same
 > thing twice.
 
-Leave the native phone field on and optional. That is *their* number, and it
-powers Calendly's SMS reminders, which are the main lever against no-shows.
-Removing our outbound number does not mean removing theirs.
+Leave the native phone field on and optional. The enquiry form already asks for
+a number, but this one is Calendly's own and is what drives its SMS reminders —
+the main lever against no-shows. It is not prefilled, so an invitee may type a
+different number here than they gave us; that is fine and worth knowing when a
+lead shows two.
 
 ### 2. Create the webhook subscription
 

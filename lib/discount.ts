@@ -43,12 +43,22 @@ export const DISCOUNT_COPY = {
 } as const;
 
 /**
- * Three fields, in the same shape as ENQUIRY_FIELDS so the modal can render
- * them with the identical markup the main form uses. Order matches the main
- * form too — identity, contact, then the field that takes thought.
+ * The same fields as ENQUIRY_FIELDS, in the same shape and the same order, so
+ * the modal can render them with the identical markup the main form uses —
+ * identity, contact, then the field that takes thought.
  *
- * No phone and no business name. Both are recoverable on the call; a claim
- * that never gets made is not.
+ * This asked for three and now asks for four. Phone was left out on the
+ * reasoning that a visitor with one foot out the door will not fill one in,
+ * and that a claim never made is worth less than a claim without a number.
+ * That trade was reversed deliberately: a lead we can only email cannot be
+ * called, and this offer exists to produce leads, not form submissions.
+ *
+ * Business name stays out of both forms — it is recoverable on the call.
+ *
+ * The two forms now ask for exactly the same things. What still separates them
+ * is the discount and the moment: this one appears to somebody already
+ * leaving. If claim volume drops after adding the phone field, that is the
+ * field to reconsider first.
  */
 export const DISCOUNT_FIELDS = [
   {
@@ -65,6 +75,14 @@ export const DISCOUNT_FIELDS = [
     type: "email",
     autoComplete: "email",
     placeholder: "you@yourbusiness.com",
+    required: true,
+  },
+  {
+    name: "phone",
+    label: "Phone / WhatsApp",
+    type: "tel",
+    autoComplete: "tel",
+    placeholder: "876 555 0123",
     required: true,
   },
   {

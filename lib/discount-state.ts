@@ -6,7 +6,13 @@
  * constant cannot live beside the action it belongs to.
  */
 
-export type DiscountFieldName = "name" | "email" | "description";
+/**
+ * Must stay a SUBSET of EnquiryFieldName in lib/form-state.ts. The modal calls
+ * the `validate` function exported from components/EnquiryForm, which is keyed
+ * on that union — widen this with a name that union does not have and the
+ * modal stops type-checking.
+ */
+export type DiscountFieldName = "name" | "email" | "phone" | "description";
 
 export type DiscountFormState = {
   ok: boolean;

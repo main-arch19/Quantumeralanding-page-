@@ -193,6 +193,15 @@ export function validate(
         return "That email address is missing something — check for a typo around the @ sign.";
       }
       return undefined;
+    case "phone":
+      if (!trimmed) return "We need a number we can reach you on.";
+      // Deliberately no format check. Jamaican, US and UK numbers all reach
+      // this form, and a regex that rejects a real number the visitor typed
+      // correctly costs more than a badly formatted one ever does.
+      if (trimmed.length > 40) {
+        return "That number is longer than we can store — digits only is fine.";
+      }
+      return undefined;
     case "description":
       if (trimmed.length < 15) {
         return "A little more detail, please — a sentence or two about what you want the site to do.";

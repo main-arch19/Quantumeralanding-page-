@@ -109,7 +109,7 @@ export function trackExitOfferShown(): void {
  * shares /booked with ordinary enquiries, and BookedTracking already fires the
  * conversion pair there. This event exists to separate the two populations in
  * GA4 — a claim is caught on the way out rather than volunteered, which makes
- * it the weaker signal even though both forms now ask for the same three
+ * it the weaker signal even though both forms now ask for the same four
  * things. Reporting that cannot tell them apart will overstate both.
  */
 export function trackDiscountClaim(): void {

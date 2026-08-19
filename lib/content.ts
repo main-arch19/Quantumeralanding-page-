@@ -324,24 +324,26 @@ export const HERO = {
 export const HERO_PRICE_READY = isFilled(PRICE_FLOOR) && isFilled(BUILD_TIMEFRAME);
 
 /**
- * THE ENQUIRY FORM. One stage, three fields.
+ * THE ENQUIRY FORM. One stage, four fields.
  *
  * This replaced a two-stage flow that ran a live audit on the visitor's URL
  * and gated the findings behind an email. That audit no longer exists and its
  * code has been removed from the tree.
  *
- * It was then five fields, and is now three. Phone and business name were both
- * cut deliberately: three fields is where completion peaks, and a phone field
- * costs more completions than any other single input. Neither is lost — the
- * scheduling step asks for a phone optionally, where it earns its place by
- * powering the reminder, and a business name is something we can ask on the
- * call.
+ * It has been five fields, then three, and is now four. The history is worth
+ * keeping because the same argument will come back around.
  *
- * The counter-argument was that a page arguing slow replies lose business
- * cannot collect leads it can only email. That is answered by WHEN we ask: a
- * phone number given at booking is given by somebody who has already committed
- * to a time, which is a better number than one typed by somebody still
- * deciding.
+ * PHONE IS REQUIRED. It was cut on the reasoning that three fields is where
+ * completion peaks and that a phone input costs more completions than any
+ * other, with the number recoverable at booking instead. That trade was
+ * reversed deliberately: it optimises for form submissions, and what this
+ * business needs is leads it can act on. A page whose entire argument is that
+ * whoever replies first wins the job cannot then collect leads it can only
+ * email — and the number is only recoverable at booking from the people who
+ * book, which is not the ones worth chasing.
+ *
+ * Business name stays out. It is genuinely recoverable on the call, and it was
+ * also the argument to the RPC that had been failing every insert.
  *
  * The description is the expensive field — a free-text box in front of an
  * uncommitted visitor is the costliest thing you can ask for. It is required
@@ -355,7 +357,7 @@ export const HERO_PRICE_READY = isFilled(PRICE_FLOOR) && isFilled(BUILD_TIMEFRAM
 export const ENQUIRY_COPY = {
   heading: "Tell us what you want built",
   subheading:
-    "Three questions. One minute. A real person reads it and writes back — not a robot.",
+    "Four questions. One minute. A real person reads it and writes back — not a robot.",
   button: "Get my build plan",
   sending: "Sending…",
   consent: "One reply, by email, about this only. No list. No drip.",
@@ -366,7 +368,7 @@ export const ENQUIRY_COPY = {
  * that takes actual thought last, once they are already committed.
  *
  * Identical in shape and order to DISCOUNT_FIELDS in lib/discount.ts, which is
- * what the exit offer renders. The two forms now ask for the same three
+ * what the exit offer renders. The two forms now ask for the same four
  * things.
  */
 export const ENQUIRY_FIELDS = [
@@ -384,6 +386,14 @@ export const ENQUIRY_FIELDS = [
     type: "email",
     autoComplete: "email",
     placeholder: "you@yourbusiness.com",
+    required: true,
+  },
+  {
+    name: "phone",
+    label: "Phone / WhatsApp",
+    type: "tel",
+    autoComplete: "tel",
+    placeholder: "876 555 0123",
     required: true,
   },
   {

@@ -19,7 +19,7 @@ const FIRED_KEY = "qes_conversion_fired";
  * `variant` separates the two populations that land here. A discount claim
  * comes from the exit offer — caught on the way out rather than volunteered,
  * which makes it the weaker signal even though both forms ask for the same
- * three things. Reporting that cannot tell them apart overstates both. It
+ * four things. Reporting that cannot tell them apart overstates both. It
  * rides on the GA4 event only; the Ads conversion fires
  * for both, so the platform still optimises on every submission. If claim
  * quality turns out poor, skipping trackAdsConversion for "discount" is the

@@ -22,15 +22,15 @@ export const PRIVACY_POLICY: LegalDocument = {
     {
       heading: "What we collect about you",
       paragraphs: [
-        `The form on this page asks for three things: your name, your work email address, and a description of what you want built. That is everything we ask you to type.`,
-        `There is no phone field on this page. If you go on to book a call, the scheduling service asks for a phone number separately and optionally, and uses it to send you a reminder.`,
+        `The form on this page asks for four things: your name, your work email address, a phone or WhatsApp number, and a description of what you want built. That is everything we ask you to type.`,
+        `We use the phone number to reply to you about your project and to arrange the call. If you go on to book a time, the scheduling service also asks for a number of its own, and uses it to send you a reminder.`,
         `We also record the advertising parameters attached to your visit (such as utm_source, utm_campaign, utm_term and gclid). These tell us which advertisement and which search term brought you here. They contain no personal information about you.`,
       ],
     },
     {
       heading: "Why we collect it",
       paragraphs: [
-        `We use your details for one purpose: to reply to you about the project you described, and to arrange the call if you want one. That is the whole of it. You can tell us to stop at any time and we will.`,
+        `We use your details for one purpose: to reply to you about the project you described, and to arrange the call if you want one. That may be by email, by phone or by WhatsApp, on the number you gave us. That is the whole of it. You can tell us to stop at any time and we will.`,
         `We do not sell your information. We do not share it with advertisers or data brokers, and we do not add you to any list beyond replying to what you sent.`,
       ],
     },

@@ -88,6 +88,15 @@ const enquirySchema = z.object({
       "That email address is missing something — check for a typo around the @ sign."
     ),
 
+  // Required. The client validator mirrors this exactly — if the two ever
+  // disagree, the browser accepts a blank and the server bounces it, which
+  // costs a lead that was already filled in.
+  phone: z
+    .string()
+    .trim()
+    .min(1, "We need a number we can reach you on.")
+    .max(40, "That number is longer than we can store — digits only is fine."),
+
   // The qualifying field. A real answer is what makes the lead worth calling.
   description: z
     .string()
@@ -100,7 +109,7 @@ const enquirySchema = z.object({
 });
 
 /**
- * The whole lead capture. One stage, three fields, all required.
+ * The whole lead capture. One stage, four fields, all required.
  *
  * Replaced a two-stage flow (audit the visitor's URL, then gate the findings
  * behind an email). That audit is gone from the tree entirely.
@@ -156,6 +165,7 @@ export async function submitEnquiry(
   const parsed = enquirySchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
+    phone: formData.get("phone"),
     description: formData.get("description"),
   });
 
@@ -173,6 +183,7 @@ export async function submitEnquiry(
   const lead = {
     name: parsed.data.name,
     email: parsed.data.email,
+    phone: parsed.data.phone.trim(),
     description: parsed.data.description,
   };
 
@@ -202,7 +213,7 @@ export async function submitEnquiry(
       p_id: leadId,
       p_name: lead.name,
       p_email: lead.email,
-      p_phone: null,
+      p_phone: lead.phone || null,
       p_project_description: lead.description,
       p_utm_source: tracking.utm_source ?? null,
       p_utm_medium: tracking.utm_medium ?? null,
@@ -274,7 +285,7 @@ export async function submitEnquiry(
 // A second capture for somebody who is already leaving, in exchange for 10%
 // off setup.
 //
-// It asks for the same three fields as the main form. That was not always so —
+// It asks for the same four fields as the main form. That was not always so —
 // the main form asked for five, and the shorter ask was this offer's whole
 // justification. Now the difference is the discount and the moment, not the
 // length.
@@ -307,6 +318,12 @@ const discountSchema = z.object({
     .email(
       "That email address is missing something — check for a typo around the @ sign."
     ),
+
+  phone: z
+    .string()
+    .trim()
+    .min(1, "We need a number we can reach you on.")
+    .max(40, "That number is longer than we can store — digits only is fine."),
 
   description: z
     .string()
@@ -358,6 +375,7 @@ export async function submitDiscountClaim(
   const parsed = discountSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
+    phone: formData.get("phone"),
     description: formData.get("description"),
   });
 
@@ -375,6 +393,7 @@ export async function submitDiscountClaim(
   const claim = {
     name: parsed.data.name,
     email: parsed.data.email,
+    phone: parsed.data.phone.trim(),
     description: parsed.data.description,
   };
 
@@ -391,7 +410,7 @@ export async function submitDiscountClaim(
       p_id: leadId,
       p_name: claim.name,
       p_email: claim.email,
-      p_phone: null,
+      p_phone: claim.phone || null,
       // The marker rides inside the row. If the tagging update below fails,
       // this is still visible to whoever opens the lead.
       p_project_description: `${DISCOUNT_MARKER}\n\n${claim.description}`,
@@ -505,6 +524,7 @@ function buildEnquiryEmail(
   lead: {
     name: string;
     email: string;
+    phone: string;
     description: string;
   },
   tracking: Record<string, string>,
@@ -513,6 +533,7 @@ function buildEnquiryEmail(
   const rows: [string, string][] = [
     ["Name", lead.name],
     ["Email", lead.email],
+    ["Phone", lead.phone || "— not given"],
   ];
 
   const trackingRows = Object.entries(tracking);
@@ -584,7 +605,12 @@ function buildEnquiryEmail(
 // The two discount emails.
 // ─────────────────────────────────────────────────────────────────────────────
 
-type DiscountClaim = { name: string; email: string; description: string };
+type DiscountClaim = {
+  name: string;
+  email: string;
+  phone: string;
+  description: string;
+};
 
 /**
  * Ours. Subject is distinct on purpose — a claim is caught on the way out
@@ -598,6 +624,7 @@ function buildDiscountEmail(
   const rows: [string, string][] = [
     ["Name", claim.name],
     ["Email", claim.email],
+    ["Phone", claim.phone || "— not given"],
     ["Discount", `${DISCOUNT_PERCENT}% off setup · code ${DISCOUNT_CODE}`],
   ];
 
