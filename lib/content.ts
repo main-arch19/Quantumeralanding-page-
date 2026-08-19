@@ -90,8 +90,18 @@ export const PRIMARY_DOMAIN =
  */
 export const CONTACT_EMAIL = "main@quantumerasolutions.com";
 
-/** Actual project floor price, e.g. "US$4,500". */
-export const PRICE_FLOOR = "[FIGURE]";
+/**
+ * Actual project floor price. Appears in the hero and in the price objection,
+ * both interpolated from here so the two can never disagree.
+ *
+ * This is a FLOOR, not an average. The objection that quotes it gives the range
+ * immediately afterwards, because a floor quoted alone gets read as the price
+ * and every quote above it then feels like an upsell.
+ */
+export const PRICE_FLOOR = "US$2,500";
+
+/** The top of the ordinary range. Quoted with PRICE_FLOOR, never alone. */
+export const PRICE_CEILING = "US$6,000";
 
 /**
  * How long the FINISHED build takes. The first draft is much faster and is
@@ -118,6 +128,12 @@ export const MARKETS = "[MARKETS]";
  *
  * Placeholder until the real split exists, so the guard below hides the
  * objection rather than publishing half a promise.
+ *
+ * WHEN YOU FILL THIS, it must name a DEPOSIT. The seven-day guarantee in TERMS
+ * (lib/legal.ts, "The seven-day first draft") starts its clock when the deposit
+ * clears, and that is currently the only place on the page a deposit is
+ * mentioned at all. A split that opens with anything else leaves the guarantee
+ * triggered by a payment the reader was never told about.
  */
 export const PAYMENT_TERMS = "[PAYMENT-TERMS]";
 
@@ -284,46 +300,74 @@ export const TRUST_LINE: readonly ClientMark[] = [
 // COPY — verbatim. Do not shorten. Do not add adjectives.
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * `priceLine` is the qualification filter and it is deliberately the third
+ * thing on the page. Two facts, one line: what it costs to start and how long
+ * it takes. Somebody whose budget is nowhere near this leaves before filling in
+ * the form, which is the outcome we want — we pay for every one of these
+ * clicks either way, and a lead that was never going to buy costs a call to
+ * find out.
+ *
+ * Interpolated from PRICE_FLOOR and BUILD_TIMEFRAME rather than typed out, so
+ * the hero cannot drift from the objection that answers the same question
+ * further down. Hidden entirely while PRICE_FLOOR is unfilled — see
+ * HERO_PRICE_READY below.
+ */
 export const HERO = {
   h1: "At 11:47 last night, someone filled in your contact form.",
   subhead:
-    "What your website did in the ninety seconds after that is the reason you never heard from them again.",
+    "What your site did in the next ninety seconds is why you never heard back.",
+  priceLine: `Builds start at ${PRICE_FLOOR}. Live in ${BUILD_TIMEFRAME.toLowerCase()}.`,
 } as const;
 
+/** The hero price line renders only once there is a real figure in it. */
+export const HERO_PRICE_READY = isFilled(PRICE_FLOOR) && isFilled(BUILD_TIMEFRAME);
+
 /**
- * THE ENQUIRY FORM. One stage, four fields.
+ * THE ENQUIRY FORM. One stage, three fields.
  *
  * This replaced a two-stage flow that ran a live audit on the visitor's URL
- * and gated the findings behind an email. That traded a lower barrier for a
- * longer path; this trades a higher barrier for a lead that arrives complete
- * and callable.
+ * and gated the findings behind an email. That audit no longer exists and its
+ * code has been removed from the tree.
+ *
+ * It was then five fields, and is now three. Phone and business name were both
+ * cut deliberately: three fields is where completion peaks, and a phone field
+ * costs more completions than any other single input. Neither is lost — the
+ * scheduling step asks for a phone optionally, where it earns its place by
+ * powering the reminder, and a business name is something we can ask on the
+ * call.
+ *
+ * The counter-argument was that a page arguing slow replies lose business
+ * cannot collect leads it can only email. That is answered by WHEN we ask: a
+ * phone number given at booking is given by somebody who has already committed
+ * to a time, which is a better number than one typed by somebody still
+ * deciding.
  *
  * The description is the expensive field — a free-text box in front of an
  * uncommitted visitor is the costliest thing you can ask for. It is required
  * anyway, because it is what makes the lead worth calling and it filters
  * anyone who was never going to show up.
  *
- * Phone is REQUIRED too. It was optional on the reasoning that most people
- * fill it unprompted and mandating it only loses the privacy-cautious — that
- * trade was reversed deliberately. A page whose entire argument is that slow
- * replies lose business cannot then collect leads it can only email. Every
- * field here is required; the (optional) marker in EnquiryForm renders for
- * none of them and stays only so adding an optional field later needs no
+ * Every field here is required. The (optional) marker in EnquiryForm renders
+ * for none of them and stays only so adding an optional field later needs no
  * component change.
  */
 export const ENQUIRY_COPY = {
   heading: "Tell us what you want built",
   subheading:
-    "Four questions, one minute. A real person reads every one of these and comes back with a real answer, not an auto-reply.",
+    "Three questions. One minute. A real person reads it and writes back — not a robot.",
   button: "Get my build plan",
   sending: "Sending…",
-  consent:
-    "No list, no sequence. We reply once, by email, and only about this.",
+  consent: "One reply, by email, about this only. No list. No drip.",
 } as const;
 
 /**
  * Field order is deliberate: identity first, contact second, and the field
  * that takes actual thought last, once they are already committed.
+ *
+ * Identical in shape and order to DISCOUNT_FIELDS in lib/discount.ts, which is
+ * what the exit offer renders. The two forms now ask for the same three
+ * things.
  */
 export const ENQUIRY_FIELDS = [
   {
@@ -335,31 +379,11 @@ export const ENQUIRY_FIELDS = [
     required: true,
   },
   {
-    name: "company",
-    label: "Business name",
-    type: "text",
-    autoComplete: "organization",
-    placeholder: "Bennett & Co",
-    // The only optional field on the form. Every extra required field costs
-    // completions on traffic we paid for, and a business name is something a
-    // rep can fill in during the call — unlike a phone number, which they
-    // cannot.
-    required: false,
-  },
-  {
     name: "email",
     label: "Work email",
     type: "email",
     autoComplete: "email",
     placeholder: "you@yourbusiness.com",
-    required: true,
-  },
-  {
-    name: "phone",
-    label: "Phone / WhatsApp",
-    type: "tel",
-    autoComplete: "tel",
-    placeholder: "876 555 0123",
     required: true,
   },
   {
@@ -374,22 +398,6 @@ export const ENQUIRY_FIELDS = [
 ] as const;
 
 /**
- * The terminal readout. Static framing only — the per-check verdicts live in
- * lib/audit/checks.ts, bound to the logic that produces them, because a verdict
- * that drifts from its check is worse than a verdict written twice.
- */
-export const AUDIT_COPY = {
-  heading: "What we found",
-  scanning: "Running checks",
-  freeCount: "2 checks shown · 5 more in the full report",
-  disclaimer:
-    "These are automated checks against your live site, run just now. They are the cheap half of what we look at on a call.",
-  failedHeading: "We could not reach that address",
-  failedBody:
-    "That happens for three reasons: a typo, a site that is down, or a server that blocks automated checks. Try the address again, and if it still will not run, book the call and we will go through it live instead.",
-} as const;
-
-/**
  * Eyebrows are TIMESTAMPS, not numbers. They narrate one night in sequence and
  * that sequence is the argument of the page. Never replace with 01 / 02 / 03.
  */
@@ -399,9 +407,9 @@ export const NARRATIVE_SECTIONS = [
     eyebrow: "11:47 PM",
     heading: "The best lead you will ever get is one that arrives at midnight.",
     body: [
-      "Somebody sat on a sofa with a laptop, decided tonight was the night they were finally going to sort this, and went looking. They found you. They read enough to think you might be the ones. Then they filled in your form.",
-      "Nobody fills in a contact form at 11:47 PM to browse. They have decided, and they are looking for somewhere to put that decision.",
-      "They are also the easiest sale you will ever be offered. No haggling, no comparison spreadsheet, no procurement. Just a person who wants somebody to take it from here.",
+      "Someone sat on a sofa with a laptop and decided tonight was the night they would finally sort this. They went looking. They found you. They read enough to think you might be the ones. Then they filled in your form.",
+      "Nobody fills in a form at 11:47 PM to browse. They have decided. They are looking for somewhere to put that decision.",
+      "They are also the easiest sale you will ever be offered. No haggling. No three quotes side by side. No one to convince. Just a person who wants somebody to take it from here.",
       "Your website has about ninety seconds to be that somebody.",
     ],
   },
@@ -411,11 +419,11 @@ export const NARRATIVE_SECTIONS = [
     heading:
       "Everybody knows what “we will be in touch shortly” means. It means nobody read it.",
     body: [
-      "One minute later your site sent them this: “Thank you for your message. We have received your enquiry and will be in touch shortly.”",
-      "They have seen that sentence a thousand times. It does not say when, it does not say who, it does not say what happens next, and it was obviously not written by anyone who read what they sent.",
-      "So they did the rational thing, and it took four minutes. They went back to the search results and filled in two more forms. Not because they preferred those companies — they had never heard of them either — but because at 11:47 PM the only sensible strategy is to ask everybody and see who turns up.",
-      "You are now in a race you did not know you had entered. The gun went off while you were asleep, and the finish line is whoever replies first with something that sounds like a person who read the message.",
-      "Here is the part that should bother you. You were probably the best of the three. Better work, fairer prices, years of doing this. None of it was on the table. The only thing being measured was who answered.",
+      "A minute later your site sent them this: “Thank you for your message. We have received your enquiry and will be in touch shortly.”",
+      "They have seen that sentence a thousand times. It does not say when. It does not say who. It does not say what happens next. And it was clearly not written by anyone who read what they sent.",
+      "So they did the sensible thing, and it took four minutes. They went back to the search results and filled in two more forms. Not because they liked those companies better — they had never heard of them either. At 11:47 PM the only smart move is to ask everyone and see who turns up.",
+      "You are now in a race you did not know you had entered. The gun went off while you were asleep. The finish line is whoever replies first with something that sounds like a person.",
+      "Here is the part that should bother you. You were probably the best of the three. Better work. Fairer prices. Years of doing this. None of it was on the table. The only thing being measured was who answered.",
     ],
   },
   {
@@ -423,11 +431,11 @@ export const NARRATIVE_SECTIONS = [
     eyebrow: "7:15 AM",
     heading: "You will never count this one as a loss.",
     body: [
-      "By the time you opened the laptop, one of the other two had already replied — automatically, with something that asked a real question. By mid-morning they had a call booked.",
-      "You replied at 9:40. Perfectly good reply. Friendly, professional, offered to talk it through. It landed on somebody who had already spoken to a competitor, and was now comparing your first message to a conversation three hours old.",
+      "By the time you opened the laptop, one of the other two had already replied. Automatically, with something that asked a real question. By mid-morning they had a call booked.",
+      "You replied at 9:40. A good reply — friendly, professional, happy to talk it through. It landed on someone who had already spoken to a competitor and was now comparing your first message to a conversation three hours old.",
       "Sometimes you still win those. Mostly you get no reply, and it goes down as a tyre-kicker.",
-      "That is the expensive part, and it is not the lost job. It is that the enquiry is still in your inbox, and it looks exactly like a lead. Not like a loss. No missed-call badge, no bounce rate, no red number in any dashboard. You have a record of it arriving and no record of why it died.",
-      "So you conclude that the enquiries you get are mostly time-wasters. It is the only conclusion the evidence allows. And it is wrong, which is why nothing changes.",
+      "That is the expensive part, and it is not the lost job. It is that the enquiry is still sitting in your inbox looking exactly like a lead. Not like a loss. No missed-call badge. No red number in any dashboard. You have a record of it arriving and no record of why it died.",
+      "So you decide the enquiries you get are mostly time-wasters. It is the only thing the evidence lets you conclude. And it is wrong, which is why nothing changes.",
     ],
   },
   {
@@ -438,10 +446,10 @@ export const NARRATIVE_SECTIONS = [
     eyebrow: "11:47 PM × 52",
     heading: "Now do it for a year.",
     body: [
-      "Take your average project value. Not your biggest, not your smallest. Hold that number.",
-      "Now count the enquiries that came through the site last year. Then be honest about how many you answered within the hour, on the day, with something that asked a question rather than acknowledging receipt.",
-      "The gap between those two numbers is what this page is about. Every one in it had already decided to spend money and was waiting to be told where to put it.",
-      "You do not need to know how many you would have won. Only whether it is more than one a month — because one a month, times your average, is a bigger number than fixing this costs. And it recurs every year until something changes.",
+      "Take your average job. Not the biggest, not the smallest. Hold that number.",
+      "Now count the enquiries that came through your site last year. Then be honest about how many you answered inside an hour, on the day, with something that asked a question instead of saying thanks.",
+      "The gap between those two numbers is what this page is about. Every one of them had already decided to spend money. They were waiting to be told where to put it.",
+      "You do not need to know how many you would have won. Only whether it is more than one a month. Because one a month, times your average, is bigger than what fixing this costs. And it happens again every year until something changes.",
     ],
   },
 ] as const;
@@ -449,13 +457,13 @@ export const NARRATIVE_SECTIONS = [
 export const MECHANISM = {
   heading: "We build the website that answers.",
   body: [
-    "Start with the thing that is actually broken, because it is rarely the design. Your site takes an enquiry and puts it in a queue, and everything after that depends on a human being who is asleep, on a job, or on holiday. That is the whole failure, and restyling the homepage does not touch it.",
-    "So the site answers. Not an auto-responder — not “Thank you, we have received your message.” Everyone knows what that means, and what it means is nobody read it.",
-    "A real conversation, in the ninety seconds while they are still sitting there. It asks what they need, what kind of project, what timeline, what they are working with. It works out whether they are a serious buyer or somebody pricing a hobby, and puts the serious ones straight into your calendar. When you wake up, the whole exchange is in your inbox — what they want, when, and whether they are worth your Tuesday.",
-    "Notice what that does to the race. You are no longer competing on who checks their email first. You answered at 11:48, and by the time anybody else replies you already have the call booked.",
-    "Then the rest has to hold up, because the same person is still deciding. It has to load on a phone on mobile data — most enquiries arrive that way, at night, on whatever signal is going. It has to say what you charge, or enough that a serious buyer knows they are in the right place and a hobbyist knows they are not.",
-    "And it has to look like the more serious operation. When someone is choosing between three suppliers, the one whose site looks like a real company gets the benefit of the doubt before a word is read.",
-    "You already know the alternative, because it is what you have. A site that was fine when it was built, that nobody has touched in three years, quietly forwarding enquiries to an inbox and hoping somebody gets there in time. It is not that it does not work. It is that it does exactly half the job and stops at the point where the money is.",
+    "Start with what is actually broken, because it is rarely the design. Your site takes an enquiry and puts it in a queue. Everything after that waits on a human being who is asleep, on a job, or away. That is the whole failure, and restyling the homepage does not touch it.",
+    "So the site answers. Not an auto-responder. A real conversation, in the ninety seconds while they are still sitting there.",
+    "It asks what they need. What kind of job. What timeline. What they are working with. It works out whether they are a serious buyer or someone pricing a hobby, and puts the serious ones straight into your calendar. When you wake up, the whole exchange is in your inbox — what they want, when, and whether they are worth your Tuesday.",
+    "Look at what that does to the race. You are no longer competing on who checks email first. You answered at 11:48. By the time anyone else replies, you already have the call booked.",
+    "Then the rest has to hold up, because the same person is still deciding. It has to load on a phone, on mobile data, because that is how most enquiries arrive — at night, on whatever signal is going. It has to say what you charge, or enough that a serious buyer knows they are in the right place and a hobbyist knows they are not.",
+    "And it has to look like the more serious outfit. When someone is choosing between three suppliers, the one whose site looks like a real company gets the benefit of the doubt before a word is read.",
+    "You already know the alternative, because it is what you have. A site that was fine when it was built and nobody has touched in three years, quietly forwarding enquiries to an inbox and hoping someone gets there in time. It is not that it does not work. It does exactly half the job and stops right where the money is.",
     "We build for the ninety seconds after somebody decides. That is the whole business.",
   ],
 } as const;
@@ -510,7 +518,7 @@ export const INCLUDED = {
     },
     {
       label: "Missed calls text back",
-      body: "A call you could not take sends a text before they have redialled your competitor. This alone pays for a lot of website.",
+      body: "A call you could not take sends a text before they have redialled your competitor. This one alone pays for a lot of website.",
     },
     {
       label: "It asks for the review",
@@ -554,11 +562,23 @@ export const OFFER = {
     {
       icon: "map",
       label: "The build, costed and dated",
-      body: "Then we map it. What it takes, what it costs, and the date it would go live. First draft inside a week. Real numbers and a real date, not a range.",
+      body: "Then we map it. What it takes, what it costs, and the date it goes live. First draft inside a week. A real number and a real date — not a range.",
     },
   ],
   closer:
     "You keep the recording and the plan whether you hire us or not. There is no pitch on this call. If what you want does not need us, we will tell you that, and that will be the end of it.",
+  /**
+   * Risk reversal, and the only promise on this page with a consequence
+   * attached. Written against FIRST_DRAFT_TIMEFRAME so it cannot drift from
+   * the FAQ answer and step 04, which promise the same week.
+   *
+   * The terms that make this enforceable — when the clock starts, what counts
+   * as a draft, what "free" refunds, and when the clock pauses — are in TERMS
+   * in lib/legal.ts under "The seven-day first draft". Do not ship this line
+   * without that section: an unqualified refund promise is the one claim here
+   * that could not be defended.
+   */
+  guarantee: `First draft in your hands within ${FIRST_DRAFT_TIMEFRAME}, or the build is free.`,
 } as const;
 
 /**
@@ -581,8 +601,12 @@ const ALL_OBJECTIONS: readonly {
     q: "What does a site like this cost?",
     // Anchors on value rather than apologising for the number. A hedged price
     // answer invites negotiation; a flat one invites the value conversation.
+    //
+    // The range follows the floor immediately and deliberately. A floor quoted
+    // alone gets read as the price, and every quote above it then feels like
+    // an upsell.
     requires: PRICE_FLOOR,
-    a: `Projects start at ${PRICE_FLOOR}. That is a real number, not an opening position we negotiate up from. Whether it is worth it depends entirely on what one job is worth to you, which is the arithmetic we do together on the call. If the numbers do not justify it, we will tell you, and you will have spent thirty minutes.`,
+    a: `Builds start at ${PRICE_FLOOR}. Most land between ${PRICE_FLOOR} and ${PRICE_CEILING}, depending on how much the site has to do. That is a real number, not an opening position we negotiate up from. The call is free and there is nothing attached to it — and if your job is smaller than that, we will say so.`,
   },
   {
     q: "Can we pay in stages?",
@@ -595,6 +619,14 @@ const ALL_OBJECTIONS: readonly {
     // product and carries stated-terms obligations we have no reason to take on.
     requires: PAYMENT_TERMS,
     a: `${PAYMENT_TERMS} No interest, no third party and no credit check — it is our invoice, split.`,
+  },
+  {
+    // Every prospect is thinking this and almost nobody in the category
+    // answers it. Concede the case where it is true — refusing to would cost
+    // more credibility than the objection itself — then move to the part the
+    // tools genuinely do not do.
+    q: "Could I not just use AI to build this?",
+    a: "You can, and for a simple brochure site you probably should — the tools are genuinely good now, and we will tell you so if that is your situation. What they do not do is answer at 11:47 PM, work out which enquiries are worth your Tuesday, and put those into your calendar. That is not a page. It is a set of questions written for what you sell and how you price it, wired into your inbox and your diary.",
   },
   {
     // The defining objection for someone who has already paid for a site once.
@@ -623,8 +655,12 @@ const ALL_OBJECTIONS: readonly {
     a: `First draft in your hands within ${FIRST_DRAFT_TIMEFRAME}. The finished build is ${BUILD_TIMEFRAME.toLowerCase()}. We will give you a real date on the call, not a range.`,
   },
   {
+    // Named, deliberately. At this scale the founder's name is the strongest
+    // trust device available and it costs nothing — an anonymous "we" on a
+    // page asking for a high-ticket commitment invites the reader to wonder
+    // how many people are actually behind it.
     q: "Who actually does the work?",
-    a: "We do. There is no account manager relaying messages to a subcontractor you never meet. You will be talking to the people building it, which is also why we cannot take many projects at once.",
+    a: `Othniel Grant. I run ${COMPANY.name} from Kingston, and I build the sites. There is no account manager relaying messages to a subcontractor you never meet — you will be talking to the person doing the work, which is also why we cannot take many projects at once.`,
   },
   {
     q: "Where are you based?",
@@ -661,7 +697,7 @@ export const TRUST_BADGE = {
 export const FINAL_CTA = {
   heading: "Tell us what you want built, and what it should do at midnight.",
   subhead:
-    "Thirty minutes, live on a call, and it costs nothing. You leave with a real number and a real date, whether you hire us or not.",
+    "Thirty minutes on a call. It costs nothing. You leave with a real number and a real date, whether you hire us or not.",
 } as const;
 
 /**
@@ -705,6 +741,7 @@ export const NOTIFICATION_CARDS = {
 const REQUIRED_VALUES: Record<string, string> = {
   PRIMARY_DOMAIN,
   PRICE_FLOOR,
+  PRICE_CEILING,
   BUILD_TIMEFRAME,
   MARKETS,
   PAYMENT_TERMS,

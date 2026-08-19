@@ -14,6 +14,7 @@ import {
 } from "@/components/NotificationCards";
 import {
   HERO,
+  HERO_PRICE_READY,
   NARRATIVE_SECTIONS,
   MECHANISM,
   INCLUDED,
@@ -140,6 +141,17 @@ export default function LandingPage() {
               <p className="mt-4 max-w-[34rem] text-lead text-ink/75 sm:mt-5">
                 {HERO.subhead}
               </p>
+
+              {/* The qualification filter. Set in the display face and rules
+                  off, so it reads as a stated fact rather than a third line
+                  of argument. Omitted entirely while PRICE_FLOOR is a
+                  placeholder — a hero that names no number is weaker than
+                  this, but a hero that prints "[FIGURE]" is broken. */}
+              {HERO_PRICE_READY && (
+                <p className="mt-5 border-l-2 border-electric pl-4 font-display text-lead font-bold text-navy">
+                  {HERO.priceLine}
+                </p>
+              )}
             </div>
 
             {/* The ask. First thing after the headline on a phone. */}
@@ -380,6 +392,14 @@ export default function LandingPage() {
 
             <p className="mx-auto mt-10 max-w-[42rem] text-center text-body text-ink/80">
               {OFFER.closer}
+            </p>
+
+            {/* The risk reversal. Boxed rather than run into the closer above
+                it, because a promise with a consequence attached should not
+                read as one more reassuring sentence. Its terms are in TERMS
+                under "The seven-day first draft". */}
+            <p className="mx-auto mt-8 max-w-[42rem] rounded-card border border-electric/30 bg-electric/[0.04] px-5 py-4 text-center font-display text-lead font-bold text-navy">
+              {OFFER.guarantee}
             </p>
 
             <div className="mt-8 text-center">
