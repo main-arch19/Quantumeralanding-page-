@@ -46,7 +46,8 @@ Everything you need to fill lives in one file — `lib/content.ts`:
 | `PRIMARY_PROOF.story` | **An upgrade story, not a first website.** What their old site was, how enquiries reached them, how long a reply took, how many went cold, what changed, the number after, over a stated time window |
 | `PRIMARY_PROOF.quote` | One sentence with a number in it, named, with role and company — and written permission to use it |
 | `SECONDARY_PROOFS` | Optional, 0–2 one-line results. Each needs a real number and time window |
-| `PRICE_FLOOR` | Actual project floor price |
+| `PRICE_FLOOR` | Actual project floor price — **filled: US$2,500**. Appears in the hero and the price objection, both interpolated from the constant |
+| `PRICE_CEILING` | Top of the ordinary range — **filled: US$6,000**. Quoted with the floor, never alone |
 | `BUILD_TIMEFRAME` | Actual typical build duration |
 | `MARKETS` | Markets you actually serve |
 
@@ -61,49 +62,42 @@ boot, and the page shows a banner listing it.
 
 ## How a lead flows
 
-Three stages, and the split is the whole design. A field costs a completely
-different amount depending on where it sits: a project-description textarea in
-front of an uncommitted visitor is the most expensive field on the internet,
-and the same question after they have decided to book is nearly free.
+One stage, three fields, and where each field sits is the whole design. A field
+costs a completely different amount depending on when it is asked: a
+project-description textarea in front of an uncommitted visitor is the most
+expensive field on the internet, and a phone number after they have decided to
+book is nearly free.
 
 ```
-STAGE 1   hero, ONE field: the website URL
-          └─ runAuditAction
-             ├─ url-safety: scheme, DNS, private-range block, redirect re-check
-             ├─ ONE html fetch, 8s timeout, 2 MB cap
-             └─ 2 findings back → rendered in the terminal readout
-                                  (no email, no database row, no redirect)
-
-STAGE 2   email gate, under the two findings: name / email / company
-          └─ submitGate                        (company PREFILLED from the domain)
+THE FORM  hero and final CTA, the same component twice:
+          name / work email / what you want built
+          └─ submitEnquiry
              ├─ honeypot + <3s submit → silently dropped
              ├─ rate limit: 5 per 10 min per IP, own budget
-             ├─ re-runs the audit server-side (never trusts the hidden field)
-             ├─ inserts the lead + full audit into Supabase
-             ├─ emails you the lead + findings + every UTM param
-             └─ redirect
+             ├─ insert_lead_with_activity RPC → Supabase (best effort)
+             ├─ emails you the lead + every UTM param
+             └─ redirect to /booked?lid=…
+
+EXIT       leaving without submitting → the 10%-off modal, same three fields
+          └─ submitDiscountClaim → same RPC, tagged, + a copy to the claimer
 
 /booked   ─ fires GA4 form_submit + Google Ads conversion (deduped on lead id)
-          ├─ renders the FULL report from the stored row
-          └─ Calendly inline, prefilled
+          └─ Calendly inline, prefilled with name and email
 
-STAGE 3   Calendly custom questions
-          a1 lead id (hidden) · a2 url (hidden) · a3 "what do you want the
-          site to do?" (REQUIRED) · phone (native, optional)
+BOOKING    Calendly custom questions
+           a1 lead id (hidden) · a2 description (hidden) ·
+           phone (native, optional — the ONLY place a phone is collected)
 ```
 
-**Why the report is on `/booked` rather than revealed in place.** Reaching
-`/booked` is what defines a conversion here — it means a submission passed
-server validation — and the conversion events dedupe on the lead id there. If
-the gate revealed the report inline, anyone who left without clicking through
-would be a captured lead with no conversion recorded, and Google Ads would be
-optimising against a number that undercounts. Putting the report at the top of
-`/booked` keeps that invariant and still pays the reward immediately.
+**Why there is no phone field on the form.** Three fields is where completion
+peaks and a phone input costs more of them than any other single field. The
+number is collected at booking instead, where it is given by somebody who has
+already committed to a time and where it earns its keep powering the reminder.
+The privacy policy states this, so it has to stay true.
 
-**Why `a3` is required.** It doubles as a no-show filter. Anyone who writes a
-real answer is a genuine buyer; anyone who writes "website" was never going to
-show up. Removing a no-show before they consume a calendar slot is worth more
-than a marginally higher booking count.
+**Why the form asks for a description at all.** It is the expensive field and
+it is required anyway: it is what makes the lead worth calling, and it filters
+anyone who was never going to show up.
 
 **Why `a1` carries the lead id.** Prefilled fields stay editable. If the
 invitee corrects their email before booking, a join on email breaks silently
@@ -111,42 +105,18 @@ and that booking disappears from attribution. The webhook returns custom
 answers, so we match on an id they never see.
 
 Every failure path degrades rather than losing the lead: no Supabase → the
-email still sends; no Resend key → the payload is logged; audit fails at stage
-2 → the lead is still captured and the call still books.
+email still sends; no Resend key → the payload is logged.
 
----
+### The RPC signature is not ours
 
-## The audit
+`insert_lead_with_activity` is owned by the **QESCRM** repo, not this one, and
+PostgREST resolves it by argument **name**. One unrecognised key fails the whole
+call with `PGRST202` — and because persistence here is best effort, that failure
+is logged and stepped over rather than surfaced.
 
-Seven checks, split on cost rather than on value. The free two are the two that
-matter most to the argument the page makes — gating the damning findings and
-leading with trivia would be a bait and would read as one.
-
-| # | Check | Tier | Needs |
-| --- | --- | --- | --- |
-| 1 | Enquiry path — real form, mailto only, or nothing | free | one fetch |
-| 2 | Server response — measured TTFB and HTML weight | free | one fetch |
-| 3 | Mobile viewport | gated | same fetch |
-| 4 | HTTPS | gated | same fetch |
-| 5 | Search listing — title and meta description | gated | same fetch |
-| 6 | Freshness — copyright year | gated | same fetch |
-| 7 | Mobile speed — Google PageSpeed Insights | gated | `PAGESPEED_API_KEY` |
-
-A check that cannot determine something returns `unknown` and says so. It never
-guesses, because being contradicted on your own audit is the worst possible
-start to a sales call.
-
-### The part to be careful with
-
-`lib/url-safety.ts` exists because stage 1 hands an anonymous visitor's URL to
-the server, which then fetches it — a textbook SSRF primitive. On a cloud host
-that is serious: the metadata endpoint at `169.254.169.254` hands credentials
-to anything that asks from inside the network.
-
-Every hostname is resolved and checked against the reserved ranges **before**
-connecting, redirects are followed manually so **every hop** is re-checked, the
-body is capped at 2 MB, and only `http`/`https` are allowed. If you touch that
-file, run the safety cases in `npm run test:audit` afterwards.
+This bit us: the call passed `p_company`, which the function has never accepted,
+so every insert was failing silently and leads survived only on the notification
+email. If you add a parameter, add it to the function first.
 
 ---
 
@@ -172,10 +142,9 @@ window that converts worse than the form.
 - Calendly loads on `/booked` only, never on the landing page, and **inline
   only** — never the popup and never a redirect to calendly.com
 
-Three scripts enforce this:
+Two scripts enforce this:
 
 ```bash
-npm run test:prefill     # company-name prefill, 18 cases
 npm run audit:links      # hrefs, target=_blank, iframes, scripts in server HTML
 npm run audit:runtime    # every host each page ACTUALLY contacts at runtime
 ```
@@ -211,16 +180,15 @@ about a lead, so it is a nullable `booked_at` column. The reason is the query
 that pays for this page:
 
 ```sql
-select created_at, name, company, website_url, email
+select created_at, name, email, project_description
 from leads
 where booked_at is null
 order by created_at desc;
 ```
 
-Those are the people who ran the audit, saw what their site was doing, handed
-over an email, and did not book. That list is worth more than the bookings, and
-splitting it across two tables turns it into a left join nobody remembers to
-write correctly.
+Those are the people who told you what they wanted built and did not book. That
+list is worth more than the bookings, and splitting it across two tables turns
+it into a left join nobody remembers to write correctly.
 
 ---
 
@@ -236,14 +204,18 @@ be removed and which undercuts the page at its highest-trust moment.
 | Slot | Question | Type | Required |
 | --- | --- | --- | --- |
 | `a1` | Lead ID | one line, hidden | no |
-| `a2` | Website URL | one line, hidden | no |
-| `a3` | What do you want the site to do? | multi-line | **yes** |
+| `a2` | What you want built | one line, hidden | no |
 
-> ⚠ **`a1`/`a2`/`a3` map positionally.** Reorder these questions, or insert one
+> ⚠ **`a1`/`a2` map positionally.** Reorder these questions, or insert one
 > above them, and the prefilled values silently write into the wrong fields —
 > no error, just corrupted data that looks fine until you try to use it. The
 > order is documented in a comment directly above the config block in
 > `components/CalendlyEmbed.tsx`; change both in the same commit.
+
+> ⚠ **Delete the old required question.** `a2` used to be Website URL and `a3`
+> a required "what do you want the site to do?". The form now asks that itself
+> and prefills it into `a2`, so a surviving `a3` asks the same person the same
+> thing twice.
 
 Leave the native phone field on and optional. That is *their* number, and it
 powers Calendly's SMS reminders, which are the main lever against no-shows.
@@ -279,15 +251,16 @@ Note the `basePath`: the route is under `/websites-that-answer/api/...`.
 
 | Event | Where |
 | --- | --- |
-| `audit_run` | stage 1 returned findings — micro-conversion, not a conversion |
 | `form_submit` | `/booked` on mount — GA4 primary |
 | `conversion` | `/booked` on mount, `transaction_id` = lead id — Google Ads |
 | `scroll_75` | 75% depth, once |
 | `call_booked` | Calendly `event_scheduled` postMessage |
+| `exit_offer_shown` | the 10%-off modal appeared — the denominator, not a conversion |
+| `discount_claim` | the modal was submitted |
 
-`audit_run` is worth watching against `form_submit`. A healthy audit rate with a
-poor submit rate means the findings are not compelling enough to be worth an
-email — a copy problem, not a traffic problem.
+`exit_offer_shown` is worth watching against `discount_claim`. A low shown-count
+means the exit trigger is not firing; a healthy shown-count with few claims
+means the offer itself is not worth the interruption.
 
 The booking loop is closed **twice, and both halves are required**:
 
@@ -356,9 +329,10 @@ small budget.
 - plus the standing set: `free`, `template`, `tutorial`, `course`, `jobs`,
   `salary`, `wordpress plugin`, `diy`
 
-Without those negatives a searcher with no website clicks your ad, lands on a
-page demanding a URL they do not have, and bounces on your money. The hero is
-a single URL field — there is no version of this page that serves them.
+Without those negatives a searcher with no website clicks your ad and bounces on
+your money. Every argument on this page — the 11:47 PM enquiry, the auto-reply,
+the year of lost jobs — assumes a site that is already taking enquiries and
+losing them. None of it lands on somebody with nothing.
 
 ---
 
@@ -367,10 +341,13 @@ a single URL field — there is no version of this page that serves them.
 A second page for the no-website segment is planned and **is not being built
 now**. Recorded so it is not lost:
 
-- Same audit engine, different input: they enter a **competitor's** URL. Every
-  owner knows who is beating them. Audit that site and show them what they are
-  up against — and when the competitor scores badly, which is usual, the
-  argument writes itself.
+- They enter a **competitor's** URL. Every owner knows who is beating them.
+  Check that site and show them what they are up against — and when the
+  competitor scores badly, which is usual, the argument writes itself. Note
+  that the audit engine this originally assumed has been deleted (it was
+  already dead code by then); it would need rebuilding, and `lib/url-safety.ts`
+  went with it — fetching a URL an anonymous visitor supplies is an SSRF
+  primitive and must not be rebuilt without those guards.
 - Paired with an instant scope-and-price estimate: four questions, a real range
   and timeline immediately. Their blocker is not knowing the cost.
 - Launch after Page A has data. No-website keywords are the most contested and

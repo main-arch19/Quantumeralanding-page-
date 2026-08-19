@@ -172,10 +172,10 @@ function SubmitButton() {
  * Client-side mirror of the server rules. The server is the authority — this
  * only exists so the correction arrives on blur instead of after a round trip.
  *
- * Exported and shared with the discount modal, whose three fields are a subset
- * of these five. The messages must match the Zod schema in app/actions.ts
- * word for word, and keeping ONE copy is the only way that stays true — the
- * discount schema reuses the same strings server-side for the same reason.
+ * Exported and shared with the discount modal, which asks for the same three
+ * fields. The messages must match the Zod schema in app/actions.ts word for
+ * word, and keeping ONE copy is the only way that stays true — the discount
+ * schema reuses the same strings server-side for the same reason.
  */
 export function validate(
   name: EnquiryFieldName,
@@ -187,28 +187,10 @@ export function validate(
     case "name":
       if (!trimmed) return "Please add your name so we know who we are talking to.";
       return undefined;
-    case "company":
-      // Optional. Only the length ceiling is enforced, and it mirrors the
-      // server schema exactly — a client validator that is stricter than the
-      // server rejects input the server would have accepted, and one that is
-      // looser costs a filled-in form at submit.
-      if (trimmed.length > 100) {
-        return "That is longer than we can store — please shorten it.";
-      }
-      return undefined;
     case "email":
       if (!trimmed) return "We need an email address to reply to.";
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
         return "That email address is missing something — check for a typo around the @ sign.";
-      }
-      return undefined;
-    case "phone":
-      if (!trimmed) return "We need a number we can reach you on.";
-      // Deliberately no format check. Jamaican, US and UK numbers all reach
-      // this form, and a regex that rejects a real number the visitor typed
-      // correctly costs more than a badly formatted one ever does.
-      if (trimmed.length > 40) {
-        return "That number is longer than we can store — digits only is fine.";
       }
       return undefined;
     case "description":

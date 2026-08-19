@@ -79,15 +79,6 @@ const enquirySchema = z.object({
     .min(1, "Please add your name so we know who we are talking to.")
     .max(100, "That name is longer than we can store — please shorten it."),
 
-  // Optional — the only field on the form that is. A business name is
-  // something a rep can fill in on the call; a phone number is not.
-  company: z
-    .string()
-    .trim()
-    .max(100, "That is longer than we can store — please shorten it.")
-    .optional()
-    .default(""),
-
   email: z
     .string()
     .trim()
@@ -96,15 +87,6 @@ const enquirySchema = z.object({
     .email(
       "That email address is missing something — check for a typo around the @ sign."
     ),
-
-  // Required. The client validator mirrors this exactly — if the two ever
-  // disagree, the browser accepts a blank and the server bounces it, which
-  // costs a lead that was already filled in.
-  phone: z
-    .string()
-    .trim()
-    .min(1, "We need a number we can reach you on.")
-    .max(40, "That number is longer than we can store — digits only is fine."),
 
   // The qualifying field. A real answer is what makes the lead worth calling.
   description: z
@@ -118,11 +100,10 @@ const enquirySchema = z.object({
 });
 
 /**
- * The whole lead capture. One stage, five fields, of which four are required.
+ * The whole lead capture. One stage, three fields, all required.
  *
  * Replaced a two-stage flow (audit the visitor's URL, then gate the findings
- * behind an email). The audit modules are still in the tree and still tested;
- * nothing here calls them.
+ * behind an email). That audit is gone from the tree entirely.
  */
 export async function submitEnquiry(
   _prevState: EnquiryFormState,
@@ -174,9 +155,7 @@ export async function submitEnquiry(
   // ── Validate ──────────────────────────────────────────────────────────────
   const parsed = enquirySchema.safeParse({
     name: formData.get("name"),
-    company: formData.get("company") ?? "",
     email: formData.get("email"),
-    phone: formData.get("phone"),
     description: formData.get("description"),
   });
 
@@ -193,9 +172,7 @@ export async function submitEnquiry(
 
   const lead = {
     name: parsed.data.name,
-    company: parsed.data.company?.trim() ?? "",
     email: parsed.data.email,
-    phone: parsed.data.phone?.trim() ?? "",
     description: parsed.data.description,
   };
 
@@ -211,14 +188,21 @@ export async function submitEnquiry(
   // a hole. supabase-js cannot batch two inserts into one transaction, so the
   // transaction lives in the database. See insert_lead_with_activity in
   // supabase/crm-migration.sql in the QESCRM repo, which owns the schema.
+  //
+  // THE ARGUMENT LIST MUST MATCH THAT FUNCTION EXACTLY. PostgREST resolves an
+  // RPC by argument NAME, so one unrecognised key fails the whole call with
+  // PGRST202 — and because persistence here is best-effort, that failure is
+  // logged and stepped over rather than surfaced. This call used to pass
+  // p_company, which the function has never accepted; every insert was failing
+  // silently and the leads survived only because the email below still went
+  // out. If you add a parameter here, add it to the function first.
   const supabase = getSupabase();
   if (supabase) {
     const { error } = await supabase.rpc("insert_lead_with_activity", {
       p_id: leadId,
       p_name: lead.name,
       p_email: lead.email,
-      p_phone: lead.phone || null,
-      p_company: lead.company || null,
+      p_phone: null,
       p_project_description: lead.description,
       p_utm_source: tracking.utm_source ?? null,
       p_utm_medium: tracking.utm_medium ?? null,
@@ -287,15 +271,18 @@ export async function submitEnquiry(
 // ─────────────────────────────────────────────────────────────────────────────
 // THE EXIT OFFER
 //
-// A second capture for somebody who is already leaving. Three fields instead
-// of five, no phone, in exchange for 10% off setup.
+// A second capture for somebody who is already leaving, in exchange for 10%
+// off setup.
 //
-// Deliberately its own action rather than a flag on submitEnquiry. That schema
-// requires a phone number — correctly, because the page's whole argument is
-// about answering people quickly — and adding a required field to a form shown
-// at the moment of abandonment defeats the point of showing it. Two actions
-// with two schemas is honest about the fact that these capture two different
-// things.
+// It asks for the same three fields as the main form. That was not always so —
+// the main form asked for five, and the shorter ask was this offer's whole
+// justification. Now the difference is the discount and the moment, not the
+// length.
+//
+// Still its own action rather than a flag on submitEnquiry, because the two
+// record different things: this one tags the lead with a discount code and
+// sends the claimer a copy. Worth revisiting whether the offer still earns its
+// place now that the forms match.
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
@@ -405,7 +392,6 @@ export async function submitDiscountClaim(
       p_name: claim.name,
       p_email: claim.email,
       p_phone: null,
-      p_company: null,
       // The marker rides inside the row. If the tagging update below fails,
       // this is still visible to whoever opens the lead.
       p_project_description: `${DISCOUNT_MARKER}\n\n${claim.description}`,
@@ -518,9 +504,7 @@ export async function submitDiscountClaim(
 function buildEnquiryEmail(
   lead: {
     name: string;
-    company: string;
     email: string;
-    phone: string;
     description: string;
   },
   tracking: Record<string, string>,
@@ -528,9 +512,7 @@ function buildEnquiryEmail(
 ): { subject: string; html: string; text: string } {
   const rows: [string, string][] = [
     ["Name", lead.name],
-    ["Business", lead.company || "— not given"],
     ["Email", lead.email],
-    ["Phone", lead.phone || "— not given"],
   ];
 
   const trackingRows = Object.entries(tracking);
@@ -605,8 +587,8 @@ function buildEnquiryEmail(
 type DiscountClaim = { name: string; email: string; description: string };
 
 /**
- * Ours. Subject is distinct on purpose — a claim is a weaker lead than an
- * enquiry (no phone number, caught on the way out) and wants triaging as one.
+ * Ours. Subject is distinct on purpose — a claim is caught on the way out
+ * rather than volunteered, and wants triaging as the weaker signal it is.
  */
 function buildDiscountEmail(
   claim: DiscountClaim,
@@ -616,7 +598,6 @@ function buildDiscountEmail(
   const rows: [string, string][] = [
     ["Name", claim.name],
     ["Email", claim.email],
-    ["Phone", "— not asked (exit offer)"],
     ["Discount", `${DISCOUNT_PERCENT}% off setup · code ${DISCOUNT_CODE}`],
   ];
 

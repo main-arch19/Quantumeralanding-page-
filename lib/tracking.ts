@@ -60,18 +60,6 @@ export function trackFormSubmit(params?: Record<string, unknown>): void {
   gtag("event", "form_submit", { event_category: "lead", ...params });
 }
 
-/**
- * Stage 1 completed — somebody typed a URL and got findings back.
- *
- * Not a conversion. It is the micro-conversion that tells you whether the
- * hero is working independently of whether the gate is: a healthy audit_run
- * rate with a poor form_submit rate means the findings are not compelling
- * enough to be worth an email, which is a copy problem, not a traffic problem.
- */
-export function trackAuditRun(): void {
-  gtag("event", "audit_run", { event_category: "engagement" });
-}
-
 /** Engagement signal — long-copy page, 75% depth means they actually read it. */
 export function trackScroll75(): void {
   gtag("event", "scroll_75", { event_category: "engagement" });
@@ -107,8 +95,8 @@ export function trackCallBooked(): void {
  *
  * Worth having on its own because the two numbers fail differently. A low
  * shown-count means the trigger is not detecting exits; a healthy shown-count
- * with few claims means the offer itself is not worth three fields. Only the
- * pair tells you which.
+ * with few claims means the offer itself is not worth the interruption. Only
+ * the pair tells you which.
  */
 export function trackExitOfferShown(): void {
   gtag("event", "exit_offer_shown", { event_category: "engagement" });
@@ -120,8 +108,9 @@ export function trackExitOfferShown(): void {
  * Unlike the main form this one does not wait for the redirect: the claim
  * shares /booked with ordinary enquiries, and BookedTracking already fires the
  * conversion pair there. This event exists to separate the two populations in
- * GA4 — a discount claim has no phone number and is a weaker lead than a full
- * enquiry, and reporting that cannot tell them apart will overstate both.
+ * GA4 — a claim is caught on the way out rather than volunteered, which makes
+ * it the weaker signal even though both forms now ask for the same three
+ * things. Reporting that cannot tell them apart will overstate both.
  */
 export function trackDiscountClaim(): void {
   gtag("event", "discount_claim", { event_category: "lead" });

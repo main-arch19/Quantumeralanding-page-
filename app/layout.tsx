@@ -11,8 +11,8 @@ import "./globals.css";
  *
  * Two families, not three: Lato sets both the display type and the body copy,
  * so the page speaks in one voice. IBM Plex Mono stays because Lato has no
- * monospace sibling and the timestamp eyebrows and audit readout need tabular
- * figures — that is what makes the time motif read as a system.
+ * monospace sibling and the timestamp eyebrows and notification cards need
+ * tabular figures — that is what makes the time motif read as a system.
  *
  * Lato ships no 500 on Google Fonts (100/300/400/700/900), which is why body
  * text that wants emphasis uses font-bold rather than font-medium.

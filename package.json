@@ -2,16 +2,13 @@
   "name": "qes-websites-that-answer",
   "version": "1.0.0",
   "private": true,
-  "description": "Quantum Era Solutions — Google Ads landing page for the free website teardown",
+  "description": "Quantum Era Solutions — Google Ads landing page for the free 30-minute build call",
   "scripts": {
     "dev": "next dev",
     "build": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-content.mts && next build",
     "check:launch": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/check-content.mts --strict",
     "start": "next start",
     "lint": "next lint",
-    "test": "npm run test:prefill && npm run test:audit",
-    "test:prefill": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/test-prefill.mts",
-    "test:audit": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/test-audit.mts",
     "audit:links": "node scripts/audit-links.mjs",
     "audit:runtime": "node scripts/audit-runtime.mjs"
   },

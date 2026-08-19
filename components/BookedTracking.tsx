@@ -17,9 +17,10 @@ const FIRED_KEY = "qes_conversion_fired";
  * double-count. transaction_id gives Google Ads the same guarantee server-side.
  *
  * `variant` separates the two populations that land here. A discount claim
- * comes from the exit offer and carries no phone number, which makes it a
- * weaker lead than a full enquiry — reporting that cannot tell them apart
- * overstates both. It rides on the GA4 event only; the Ads conversion fires
+ * comes from the exit offer — caught on the way out rather than volunteered,
+ * which makes it the weaker signal even though both forms ask for the same
+ * three things. Reporting that cannot tell them apart overstates both. It
+ * rides on the GA4 event only; the Ads conversion fires
  * for both, so the platform still optimises on every submission. If claim
  * quality turns out poor, skipping trackAdsConversion for "discount" is the
  * single line to change.
