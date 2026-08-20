@@ -2,44 +2,48 @@
  * EVERY piece of copy on the page lives here.
  *
  * Values still wrapped in [BRACKETS] are unfilled. A production build FAILS
- * while any required value still contains them — see assertNoPlaceholders() at
+ * while any required value still contains them — see unfilledPlaceholders() at
  * the bottom of this file. Google Ads policy prohibits unsubstantiated claims,
  * and a page with placeholder proof is both a disapproval risk and a worse page
  * than no page at all.
  *
  * WHO THIS PAGE IS WRITTEN FOR
- * A business that ALREADY HAS A WEBSITE and is not getting enough out of it.
- * Years of trading, real revenue, and a site somebody built for them at some
- * point that now sits there taking the occasional enquiry into a mailbox
- * nobody watches. Their pain is present-tense and their willingness to spend
- * is already proven by what they spent last time.
+ * The owner of a residential HVAC company in a tier 2 or tier 3 US city. One to
+ * three locations, eight to thirty trucks, $2M–$10M. He came up in the trade and
+ * still runs calls in peak season. He is the bottleneck — quoting, dispatching,
+ * hiring and payroll all run through him. There is one bigger outfit in town,
+ * forty-plus trucks, that outranks him on every search and takes jobs he should
+ * be getting. He thinks in monthly payments because that is how he buys trucks.
+ * He can smell a pitch, and a few agencies have already sold him something vague
+ * and disappeared.
  *
- * The loss this page names is the enquiry that arrived and went cold: somebody
- * ready to buy filled in the form at 11:47 PM, got an auto-reply that told them
- * nothing, filled in two competitors' forms while they were still sitting
- * there, and hired whoever answered first. The enquiry is still in the inbox.
- * It looks like a lead rather than a loss, which is exactly why it has never
- * been counted.
+ * THE LOSS THIS PAGE NAMES IS THE MISSED CALL. Roughly twenty-five a month go
+ * unanswered — lunch, after hours, a second call arriving while the first is
+ * live. The caller does not leave a voicemail. He taps the next result and books
+ * with whoever picks up. There is no missed-call badge on a job you never knew
+ * existed, which is exactly why it has never been counted.
  *
- * THIS IS PAGE A. Every ARGUMENT below assumes an existing site with an
- * existing contact form. Do NOT broaden that argument to accommodate people
- * with no website — that is a separate page with a separate ad group, and
- * serving both makes this one vague. Vague is what kills paid traffic.
+ * THE NUMBERS ARE THE READER'S, NOT OURS. This page never asserts a measured
+ * figure about the person reading it. It hands him the arithmetic and tells him
+ * where to verify each input himself — his phone system logs every unanswered
+ * call, and he knows his own quote count. That is both more persuasive than a
+ * claim and the only version of this argument that survives Ads review. Do not
+ * convert any of it into a flat assertion about his business.
  *
- * THE OFFER IS DELIBERATELY ONE STEP AHEAD OF THE ARGUMENT. The argument
- * proves their current site loses enquiries; the ask is what they want BUILT,
- * and what they receive is a scoped plan with a price and a date. That is not
- * a contradiction — it is the conclusion. Somebody persuaded their site is
- * costing them money does not want a diagnosis, they want the replacement
- * costed. The offer section still opens on the 11:47 PM buyer and step 03
- * still shows them who is collecting those searches; only the starting
- * material changed, from the site they have to the thing they want.
+ * NEVER LEAD WITH THE WEBSITE. The product is a lead-to-booked-job system in
+ * three parts: a page for every town crossed with every service, an automation
+ * layer that answers and follows up, and a dashboard with four numbers on it.
+ * The site is one third of one part. A headline that makes it the product sells
+ * the cheapest component of the offer and invites comparison against every
+ * web shop in his market.
  *
- * So: OFFER, FINAL_CTA and ENQUIRY_COPY speak to build intent. HERO,
- * NARRATIVE_SECTIONS, MECHANISM and OBJECTIONS speak to an existing failing
- * site. Keep that split. Moving build language up into the narrative is what
- * would make this page vague, and it is the specific mistake this note exists
- * to prevent.
+ * NEVER NAME THE UNDERLYING TOOLS. Outcomes only. The stack is an
+ * implementation detail he does not care about, and naming it converts a system
+ * he is buying into software he could go price himself.
+ *
+ * PRICE IS LED BY THE MONTHLY. $4,000 down and $2,400/month is how he thinks
+ * about buying anything. $12,000 is available to anyone who prefers it, and it
+ * is never the first figure stated.
  */
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -85,59 +89,78 @@ export const PRIMARY_DOMAIN =
  *
  * There is no phone number anywhere on this page. It was removed because it
  * could not be answered reliably during working hours, and a number that rings
- * out is worse than no number at all on a page whose entire argument is that
- * slow response loses business.
+ * out is worse than no number at all on a page whose entire argument is that a
+ * call nobody picks up is a job somebody else books.
  */
 export const CONTACT_EMAIL = "main@quantumerasolutions.com";
 
 /**
- * Actual project floor price. Appears in the hero and in the price objection,
- * both interpolated from here so the two can never disagree.
+ * The deposit, and the first figure a price-conscious buyer sees.
  *
- * This is a FLOOR, not an average. The objection that quotes it gives the range
- * immediately afterwards, because a floor quoted alone gets read as the price
- * and every quote above it then feels like an upsell.
+ * THE PRICE IS FIXED, NOT A RANGE. It used to be a floor with a ceiling quoted
+ * beside it, because the product was a build whose scope moved. This product
+ * does not move: the same three parts ship to every client, so a range would
+ * invent uncertainty that does not exist and invite a negotiation there is no
+ * room for.
+ *
+ * Interpolated into the hero and the price objection from here, so the two can
+ * never disagree.
  */
-export const PRICE_FLOOR = "US$2,500";
+export const PRICE_DEPOSIT = "$4,000";
 
-/** The top of the ordinary range. Quoted with PRICE_FLOOR, never alone. */
-export const PRICE_CEILING = "US$6,000";
+/** The monthly, for twelve months. Always stated with PRICE_DEPOSIT. */
+export const PRICE_MONTHLY = "$2,400/month";
 
 /**
- * How long the FINISHED build takes. The first draft is much faster and is
- * stated separately wherever this appears — leading with six weeks alone
- * throws away the strongest scheduling fact we have, and leading with one
- * week alone would promise a finished site in seven days.
+ * The alternative for anyone who would rather not carry a monthly.
+ *
+ * NEVER THE FIRST FIGURE STATED. This buyer thinks in monthly payments because
+ * that is how he buys trucks, and leading with the total prices him out of a
+ * decision he would have made on the monthly. It is offered, once, immediately
+ * after the monthly, for the minority who pay cash for equipment.
+ */
+export const PRICE_UPFRONT = "$12,000";
+
+/** What it costs to keep running after the first twelve months. */
+export const PRICE_RENEWAL = "$1,800/month";
+
+/**
+ * How long the FULL build takes — every town page live, every automation
+ * running. The first towns go live much sooner and that number is stated
+ * separately wherever this appears.
  */
 export const BUILD_TIMEFRAME = "Six weeks";
 
-/** How long until the client is looking at a first draft. The fast number. */
-export const FIRST_DRAFT_TIMEFRAME = "one week";
+/**
+ * How long until his first town pages are live and taking calls. The fast
+ * number, and the one the guarantee is written against.
+ */
+export const FIRST_TOWNS_TIMEFRAME = "two weeks";
 
 /** Markets actually served, e.g. "Jamaica, the wider Caribbean and the US". */
 export const MARKETS = "[MARKETS]";
 
 /**
- * How the invoice splits across the build, e.g. "A third to start, a third at
- * the midpoint, the balance on launch."
+ * How the deposit splits, if it splits at all, e.g. "Half to start, half when
+ * the first towns go live."
  *
  * Our own instalments, never a third-party lender. That keeps this out of
  * consumer-credit advertising rules entirely, which is the whole reason the
- * page says "pay in stages" rather than "financing available" — the second
+ * page says "split the deposit" rather than "financing available" — the second
  * phrase implies a credit product and carries stated-terms obligations.
  *
  * Placeholder until the real split exists, so the guard below hides the
  * objection rather than publishing half a promise.
  *
- * WHEN YOU FILL THIS, it must name a DEPOSIT. The seven-day guarantee in TERMS
- * (lib/legal.ts, "The seven-day first draft") starts its clock when the deposit
- * clears, and that is currently the only place on the page a deposit is
- * mentioned at all. A split that opens with anything else leaves the guarantee
+ * WHEN YOU FILL THIS, it must name a DEPOSIT. The two-week guarantee in TERMS
+ * (lib/legal.ts, "The two-week first towns") starts its clock when the deposit
+ * clears, and that is currently the only place on the page a deposit's timing
+ * is pinned down. A split that opens with anything else leaves the guarantee
  * triggered by a payment the reader was never told about.
  */
 export const PAYMENT_TERMS = "[PAYMENT-TERMS]";
 
-/** The Calendly event link for the build call. Embedded on /booked only. */
+/** The Calendly event link for the call. Embedded on /booked only. */
 export const CALENDLY_URL =
   process.env.NEXT_PUBLIC_CALENDLY_URL ?? "[CALENDLY-URL]";
 
@@ -301,27 +324,51 @@ export const TRUST_LINE: readonly ClientMark[] = [
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
+ * THREE HEADLINES, ONE SHIPPED.
+ *
+ * The two alternates are kept in the file rather than in somebody's notes,
+ * because a variant that lives outside the codebase is a variant nobody ever
+ * tests. Swap `h1`/`subhead` to run one; change nothing else.
+ *
+ *   A — LOSS   (shipped) names the money before it names us. This is the
+ *              angle the audience research points at: what makes him buy is a
+ *              specific number showing money he is losing right now.
+ *   B — SPEED  sells the race rather than the loss. Softer, because it asks
+ *              him to accept a mechanism before he has accepted a cost.
+ *   C — PROOF  uses the bigger outfit across town as the wedge. Highest
+ *              variance — it lands hardest on the ones it lands on, and reads
+ *              as an insult to anyone who does not feel outranked.
+ *
+ * B: "The first contractor to call back gets the job. It is usually not you."
+ *    sub: "Not because you are slower. Because you were on a roof and he has
+ *    a system."
+ *
+ * C: "The 40-truck outfit across town is not better than you. They just
+ *    answer faster."
+ *    sub: "Every town you both serve, they show up first and pick up first.
+ *    Both of those are fixable."
+ *
  * `priceLine` is the qualification filter and it is deliberately the third
  * thing on the page. Two facts, one line: what it costs to start and how long
- * it takes. Somebody whose budget is nowhere near this leaves before filling in
- * the form, which is the outcome we want — we pay for every one of these
+ * it takes. Somebody whose budget is nowhere near this leaves before filling
+ * in the form, which is the outcome we want — we pay for every one of these
  * clicks either way, and a lead that was never going to buy costs a call to
  * find out.
  *
- * Interpolated from PRICE_FLOOR and BUILD_TIMEFRAME rather than typed out, so
- * the hero cannot drift from the objection that answers the same question
- * further down. Hidden entirely while PRICE_FLOOR is unfilled — see
- * HERO_PRICE_READY below.
+ * LEADS WITH THE MONTHLY. Interpolated from PRICE_DEPOSIT and PRICE_MONTHLY so
+ * the hero cannot drift from the objection answering the same question further
+ * down. Hidden entirely while either is unfilled — see HERO_PRICE_READY.
  */
 export const HERO = {
-  h1: "At 11:47 last night, someone filled in your contact form.",
+  h1: "Your phone rang 25 times last month and nobody picked up.",
   subhead:
-    "What your site did in the next ninety seconds is why you never heard back.",
-  priceLine: `Builds start at ${PRICE_FLOOR}. Live in ${BUILD_TIMEFRAME.toLowerCase()}.`,
+    "Roughly a quarter of those would have booked. Go pull your call log — the number is sitting in it.",
+  priceLine: `${PRICE_DEPOSIT} down, then ${PRICE_MONTHLY}. ${BUILD_TIMEFRAME} to build.`,
 } as const;
 
 /** The hero price line renders only once there is a real figure in it. */
-export const HERO_PRICE_READY = isFilled(PRICE_FLOOR) && isFilled(BUILD_TIMEFRAME);
+export const HERO_PRICE_READY =
+  isFilled(PRICE_DEPOSIT) && isFilled(PRICE_MONTHLY) && isFilled(BUILD_TIMEFRAME);
 
 /**
  * THE ENQUIRY FORM. One stage, four fields.
@@ -333,34 +380,33 @@ export const HERO_PRICE_READY = isFilled(PRICE_FLOOR) && isFilled(BUILD_TIMEFRAM
  * It has been five fields, then three, and is now four. The history is worth
  * keeping because the same argument will come back around.
  *
- * PHONE IS REQUIRED. It was cut on the reasoning that three fields is where
- * completion peaks and that a phone input costs more completions than any
- * other, with the number recoverable at booking instead. That trade was
- * reversed deliberately: it optimises for form submissions, and what this
- * business needs is leads it can act on. A page whose entire argument is that
- * whoever replies first wins the job cannot then collect leads it can only
- * email — and the number is only recoverable at booking from the people who
- * book, which is not the ones worth chasing.
+ * PHONE IS REQUIRED, and on this page it is the whole point. It was cut once on
+ * the reasoning that three fields is where completion peaks and that a phone
+ * input costs more completions than any other. That trade was reversed
+ * deliberately: it optimises for form submissions, and what this business needs
+ * is leads it can act on. A page whose entire argument is that whoever picks up
+ * first wins the job cannot then collect leads it can only email.
+ *
+ * The last field asks for TRUCKS AND TOWNS rather than "what you want built",
+ * because those two numbers are what the call runs on. Truck count sizes the
+ * business against the offer, and the town list is what gets searched live on
+ * the call to show him who is currently collecting his customers. Asking for
+ * them here means the diagnostic starts before the call does.
  *
  * Business name stays out. It is genuinely recoverable on the call, and it was
  * also the argument to the RPC that had been failing every insert.
- *
- * The description is the expensive field — a free-text box in front of an
- * uncommitted visitor is the costliest thing you can ask for. It is required
- * anyway, because it is what makes the lead worth calling and it filters
- * anyone who was never going to show up.
  *
  * Every field here is required. The (optional) marker in EnquiryForm renders
  * for none of them and stays only so adding an optional field later needs no
  * component change.
  */
 export const ENQUIRY_COPY = {
-  heading: "Tell us what you want built",
+  heading: "Tell us what you are working with",
   subheading:
-    "Four questions. One minute. A real person reads it and writes back — not a robot.",
-  button: "Get my build plan",
+    "Four questions, one minute. A person reads it and calls you back — not a robot.",
+  button: "Get my missed-call number",
   sending: "Sending…",
-  consent: "One reply, by email, about this only. No list. No drip.",
+  consent: "One reply, about this only. No list. No drip.",
 } as const;
 
 /**
@@ -368,8 +414,9 @@ export const ENQUIRY_COPY = {
  * that takes actual thought last, once they are already committed.
  *
  * Identical in shape and order to DISCOUNT_FIELDS in lib/discount.ts, which is
- * what the exit offer renders. The two forms now ask for the same four
- * things.
+ * what the exit offer renders. The two forms ask for the same four things, and
+ * the `name` keys are the argument names of the Supabase RPC — changing one
+ * without the other breaks every insert.
  */
 export const ENQUIRY_FIELDS = [
   {
@@ -377,7 +424,7 @@ export const ENQUIRY_FIELDS = [
     label: "Your name",
     type: "text",
     autoComplete: "name",
-    placeholder: "Marcia Bennett",
+    placeholder: "Dale Whitaker",
     required: true,
   },
   {
@@ -385,96 +432,108 @@ export const ENQUIRY_FIELDS = [
     label: "Work email",
     type: "email",
     autoComplete: "email",
-    placeholder: "you@yourbusiness.com",
+    placeholder: "you@yourcompany.com",
     required: true,
   },
   {
     name: "phone",
-    label: "Phone / WhatsApp",
+    label: "Cell",
     type: "tel",
     autoComplete: "tel",
-    placeholder: "876 555 0123",
+    placeholder: "(555) 018-4420",
     required: true,
   },
   {
     name: "description",
-    label: "What you want built",
+    label: "How many trucks you run, and which towns you cover",
     type: "textarea",
     autoComplete: "off",
     placeholder:
-      "A few lines is plenty — what the business does, and what you want the new site to do for it.",
+      "A line is plenty — how many trucks, and the towns you will drive to.",
     required: true,
   },
 ] as const;
 
 /**
- * Eyebrows are TIMESTAMPS, not numbers. They narrate one night in sequence and
- * that sequence is the argument of the page. Never replace with 01 / 02 / 03.
+ * Eyebrows are TIMESTAMPS, not numbers. They narrate one hot Tuesday in
+ * sequence and that sequence is the argument of the page. Never replace with
+ * 01 / 02 / 03.
+ *
+ * The fourth eyebrow breaks the clock on purpose — it is the same day
+ * multiplied out to a year, and it is the section that turns a lost call into
+ * a number bigger than the price.
+ *
+ * NOTHING HERE ASSERTS A FIGURE ABOUT THE READER. Every number is either an
+ * industry-typical figure he is told to go check against his own logs, or
+ * arithmetic he performs himself with his own inputs. That is deliberate and
+ * it is not timidity: a number he calculated is one he believes, and a number
+ * we claimed about a business we have never seen is one Ads can disapprove.
  */
 export const NARRATIVE_SECTIONS = [
   {
-    id: "enquiry",
-    eyebrow: "11:47 PM",
-    heading: "The best lead you will ever get is one that arrives at midnight.",
+    id: "missed-call",
+    eyebrow: "11:20 AM",
+    heading: "The second call always comes while you are on the first one.",
     body: [
-      "Someone sat on a sofa with a laptop and decided tonight was the night they would finally sort this. They went looking. They found you. They read enough to think you might be the ones. Then they filled in your form.",
-      "Nobody fills in a form at 11:47 PM to browse. They have decided. They are looking for somewhere to put that decision.",
-      "They are also the easiest sale you will ever be offered. No haggling. No three quotes side by side. No one to convince. Just a person who wants somebody to take it from here.",
-      "Your website has about ninety seconds to be that somebody.",
+      "It is 96 degrees. Your best tech is in an attic in Fairview and you are on the phone with a woman whose condenser died overnight.",
+      "Another call comes in. It rings four times and goes to voicemail.",
+      "He does not leave one. Nobody leaves voicemails anymore. He hangs up and taps the next result.",
+      "You never knew he called. There is no missed-call badge on a job you did not know existed.",
     ],
   },
   {
-    id: "auto-reply",
-    eyebrow: "11:48 PM",
-    heading:
-      "Everybody knows what “we will be in touch shortly” means. It means nobody read it.",
+    id: "competitor",
+    eyebrow: "11:21 AM",
+    heading: "Somebody answered him. It took nine seconds.",
     body: [
-      "A minute later your site sent them this: “Thank you for your message. We have received your enquiry and will be in touch shortly.”",
-      "They have seen that sentence a thousand times. It does not say when. It does not say who. It does not say what happens next. And it was clearly not written by anyone who read what they sent.",
-      "So they did the sensible thing, and it took four minutes. They went back to the search results and filled in two more forms. Not because they liked those companies better — they had never heard of them either. At 11:47 PM the only smart move is to ask everyone and see who turns up.",
-      "You are now in a race you did not know you had entered. The gun went off while you were asleep. The finish line is whoever replies first with something that sounds like a person.",
-      "Here is the part that should bother you. You were probably the best of the three. Better work. Fairer prices. Years of doing this. None of it was on the table. The only thing being measured was who answered.",
+      "The next number he tapped picked up on the second ring. Not the owner — a system, or somebody paid to sit by a phone. It does not matter which. It answered.",
+      "By 11:40 he had a two-hour window and a tech's name.",
+      "Here is the part worth sitting with. You were probably the better company. Better techs, fairer price, twenty years in this town. None of that was ever on the table. The only thing measured was who picked up.",
+      "That happens about twenty-five times a month at your size. Lunch. After five. A second call while the first is live. Your phone system logs every one of them — go look before you believe me.",
     ],
   },
   {
-    id: "morning",
-    eyebrow: "7:15 AM",
-    heading: "You will never count this one as a loss.",
+    id: "invisible",
+    eyebrow: "6:40 PM",
+    heading: "You will never count this as a loss.",
     body: [
-      "By the time you opened the laptop, one of the other two had already replied. Automatically, with something that asked a real question. By mid-morning they had a call booked.",
-      "You replied at 9:40. A good reply — friendly, professional, happy to talk it through. It landed on someone who had already spoken to a competitor and was now comparing your first message to a conversation three hours old.",
-      "Sometimes you still win those. Mostly you get no reply, and it goes down as a tyre-kicker.",
-      "That is the expensive part, and it is not the lost job. It is that the enquiry is still sitting in your inbox looking exactly like a lead. Not like a loss. No missed-call badge. No red number in any dashboard. You have a record of it arriving and no record of why it died.",
-      "So you decide the enquiries you get are mostly time-wasters. It is the only thing the evidence lets you conclude. And it is wrong, which is why nothing changes.",
+      "You closed out four jobs today. Good day. Trucks moved, invoices went out.",
+      "Nothing on your desk says you lost anything. A missed call does not generate paperwork. It does not show up in your P&L as a line item called jobs that went to the other guy.",
+      "So the only conclusion available to you is that things are fine, or the market is soft, or people are cheap this year.",
+      "The same thing happens to your estimates. Fifteen go out a month. The ones that do not close that day just sit there. Nobody calls. Not because you do not care — because you are quoting the next one.",
+      "And there is a third one you cannot see at all. Somebody two towns over searched for exactly what you sell this afternoon and never found you, because you serve six towns and you have one page. The forty-truck outfit has a page for every one of them. That is not a better company. That is more pages.",
+      "You have a record of the work you did. You have no record of the work that walked.",
     ],
   },
   {
-    // The value anchor. Everything before this is one lost enquiry; this is the
-    // lost enquiry multiplied, and it is what makes the price a small number.
-    // The reader supplies the figures — that is more persuasive than we are.
+    // The value anchor. Everything before this is one lost call; this is the
+    // lost call multiplied, and it is what makes the price a small number.
+    // The reader supplies every figure — that is more persuasive than we are,
+    // and it is the only version of this that is defensible.
     id: "arithmetic",
-    eyebrow: "11:47 PM × 52",
-    heading: "Now do it for a year.",
+    eyebrow: "× 12 months",
+    heading: "Do the arithmetic yourself. Do not take my number for it.",
     body: [
-      "Take your average job. Not the biggest, not the smallest. Hold that number.",
-      "Now count the enquiries that came through your site last year. Then be honest about how many you answered inside an hour, on the day, with something that asked a question instead of saying thanks.",
-      "The gap between those two numbers is what this page is about. Every one of them had already decided to spend money. They were waiting to be told where to put it.",
-      "You do not need to know how many you would have won. Only whether it is more than one a month. Because one a month, times your average, is bigger than what fixing this costs. And it happens again every year until something changes.",
+      "Take your average ticket. Not the biggest install, not a capacitor swap. The middle one. Hold it.",
+      "Now pull your call log for last month and count what went unanswered. Then be honest about how many of those were real work. A quarter is the number most shops land on.",
+      "Multiply. That is one month.",
+      "Then do the estimates. Fifteen a month, five grand a job, and about one in ten of the dead ones comes back if somebody actually follows up. Add it.",
+      "You do not need the number to be exact. You only need to know whether it is bigger than what this costs a month. It is not close. And it happens again next year, and the year after, until something picks up the phone.",
     ],
   },
 ] as const;
 
 export const MECHANISM = {
-  heading: "We build the website that answers.",
+  heading: "We build the thing that picks up.",
   body: [
-    "Start with what is actually broken, because it is rarely the design. Your site takes an enquiry and puts it in a queue. Everything after that waits on a human being who is asleep, on a job, or away. That is the whole failure, and restyling the homepage does not touch it.",
-    "So the site answers. Not an auto-responder. A real conversation, in the ninety seconds while they are still sitting there.",
-    "It asks what they need. What kind of job. What timeline. What they are working with. It works out whether they are a serious buyer or someone pricing a hobby, and puts the serious ones straight into your calendar. When you wake up, the whole exchange is in your inbox — what they want, when, and whether they are worth your Tuesday.",
-    "Look at what that does to the race. You are no longer competing on who checks email first. You answered at 11:48. By the time anyone else replies, you already have the call booked.",
-    "Then the rest has to hold up, because the same person is still deciding. It has to load on a phone, on mobile data, because that is how most enquiries arrive — at night, on whatever signal is going. It has to say what you charge, or enough that a serious buyer knows they are in the right place and a hobbyist knows they are not.",
-    "And it has to look like the more serious outfit. When someone is choosing between three suppliers, the one whose site looks like a real company gets the benefit of the doubt before a word is read.",
-    "You already know the alternative, because it is what you have. A site that was fine when it was built and nobody has touched in three years, quietly forwarding enquiries to an inbox and hoping someone gets there in time. It is not that it does not work. It does exactly half the job and stops right where the money is.",
-    "We build for the ninety seconds after somebody decides. That is the whole business.",
+    "Start with what is actually broken, because it is not your website. Your phone rings and it lands on a person — you, your office manager, whoever is closest. When that person is busy, the call is gone. That is the whole failure, and a nicer homepage does not touch it.",
+    "So something else answers. A call you could not take gets a text back inside a minute, before he has redialled anybody. Every new lead, from wherever it came, gets a real response in under sixty seconds. Not an acknowledgement. A question about what the unit is doing and when somebody can come look.",
+    "Then the towns. You serve six and you have one page, so you show up in the town your shop sits in and you are invisible in the other five. That is why the forty-truck outfit outranks you everywhere. Every town you serve gets its own page, crossed with every service you sell. When somebody in Fairview searches for AC repair in Fairview, there is something of yours to find.",
+    "Then the follow-up nobody has time for. Estimates that did not close get chased on a schedule. Maintenance plans get renewal notices before they lapse. The customer list already sitting in your system — the thousands of names that have never been emailed once — gets a tune-up reminder in September and again in March. Finished jobs get asked for a review while the customer is still happy.",
+    "None of that requires you to remember it. That is the point of it.",
+    "Then the dashboard, which is one screen. How many leads came in. How fast each one got answered. How many booked. What it cost. Four numbers. If they are bad you will see it in October, not next June.",
+    "You already know the alternative, because it is what you have. You are the system. Quoting, dispatching, answering, hiring, all of it running through one man who is also supposed to be running the company. That works until it is 96 degrees.",
+    "We build for the ninety seconds after somebody's system dies. That is the whole business.",
   ],
 } as const;
 
@@ -487,114 +546,138 @@ export const MECHANISM = {
  * name, convert ninety capabilities into ninety promises a client can hold us
  * to mid-build, and bury the four lines that actually sell.
  *
- * The test for inclusion is narrow: does this line serve the 11:47 PM
- * argument? "Answers in seconds", "asks the qualifying questions", "books the
- * call" and "chases the quiet ones" ARE the argument, restated as
- * deliverables. The rest earn their place by being things a business owner
- * already wishes were handled.
+ * The test for inclusion is narrow: does this line serve the missed-call
+ * argument, or one of the three losses named beside it — dead estimates, the
+ * five towns he is invisible in, the customer list nobody has ever emailed?
+ * The first three items ARE the argument, restated as deliverables. The rest
+ * earn their place by being things he already wishes were handled.
  *
- * Anything the platform can do that is not here is still deliverable — it is
- * discussed on the call, where scope is negotiated. It is simply not PROMISED
- * on a page that has been careful about what it promises.
+ * The last item is the dashboard, and it is last on purpose. It is what
+ * answers "I have paid for marketing before and nothing happened", so it wants
+ * to be the line he is still holding when he reaches the objections.
  *
- * Written as OUTCOMES, never as product names. "One inbox for everything"
- * survives a platform migration; "Unified Inbox" is somebody else's brand and
+ * Written as OUTCOMES, never as product names. "One screen with four numbers"
+ * survives a platform migration; a product name is somebody else's brand and
  * naming it here would identify the stack to anyone who has seen its deck.
  */
 export const INCLUDED = {
   eyebrow: "Included in every build",
-  heading: "What the site does once it is live.",
-  intro: "Not a feature list. This is the part that runs while you are asleep.",
+  heading: "What runs while you are on a call.",
+  intro: "Not a feature list. This is the part that works when you cannot.",
   items: [
     {
-      label: "It answers in seconds",
-      body: "Every enquiry gets a real reply immediately — from the form, WhatsApp, Instagram, Facebook or Google. Not an acknowledgement. A question.",
+      label: "A missed call texts back",
+      body: "Inside a minute, before he has dialled the next result. This one alone pays for most of what this costs.",
     },
     {
-      label: "It asks what you would ask",
-      body: "What the job is, when they need it, what they are working with, roughly what they are prepared to spend. The questions you would ask on a call, asked while they are still on the page.",
+      label: "Every lead answered in under sixty seconds",
+      body: "Phone, form, wherever it came from. A real question about the unit and the timeline, not a thank-you note.",
     },
     {
-      label: "It books the call",
-      body: "Serious buyers go straight into your calendar with reminders attached, so the meeting they booked at midnight is one they turn up to.",
+      label: "A page for every town you serve",
+      body: "Crossed with every service you sell. Six towns and four services is twenty-four ways to be found instead of one.",
     },
     {
-      label: "It chases the quiet ones",
-      body: "The ones who go silent get followed up without you remembering to. Most enquiries are lost after the first reply, not before it.",
+      label: "Estimates get chased",
+      body: "The ones that do not close same-day get followed up on a schedule. You already did the quoting. This is the part nobody has time for.",
     },
     {
-      label: "One inbox for everything",
-      body: "WhatsApp, Instagram, Facebook, text and email land in one place, on your phone. No more checking five apps to find out who is waiting.",
+      label: "Maintenance plans get renewed",
+      body: "Reminders before they lapse, not after. Plan count is the number that carries you through February.",
     },
     {
-      label: "Missed calls text back",
-      body: "A call you could not take sends a text before they have redialled your competitor. This one alone pays for a lot of website.",
+      label: "Your old customers hear from you",
+      body: "Tune-up campaigns in September and March, to the list already sitting in your system. The cheapest work you will ever book.",
     },
     {
-      label: "It asks for the review",
-      body: "Finished jobs get a review request automatically, at the moment the client is happiest, which is the only moment that works.",
+      label: "Reviews get asked for",
+      body: "Automatically, the day the job closes, which is the only day it works.",
     },
     {
-      label: "It takes the money",
-      body: "Deposits, invoices and card payments online, so a yes does not wait on a bank transfer somebody has to remember to make.",
+      label: "One screen with four numbers",
+      body: "Leads in, how fast each was answered, how many booked, what it cost. Open it on your phone at a light.",
     },
   ],
 } as const;
 
 /**
- * The copy always described four sequential things that happen on the call —
- * "We start… Then we… Then we… Then we map the fix" — but rendered them as
- * six undifferentiated paragraphs, so the sequence was invisible and the
- * reader had to reconstruct it. The words are unchanged; only the shape is.
+ * THE CALL IS THE DIAGNOSTIC, NOT A DEMO.
+ *
+ * This buyer has been pitched before and a few agencies have already sold him
+ * something vague. "Book a call" is what those agencies said. What makes this
+ * answerable is that every step produces a number he did not have before, from
+ * his own data, on his own screen — and he keeps all of it whether or not he
+ * hires us. That is the difference between a diagnostic and a sales meeting,
+ * and it has to be visible in the steps themselves rather than asserted.
+ *
+ * Step 03 is the one that closes. Searching his own towns live, in front of
+ * him, shows him the forty-truck outfit collecting customers he thought he was
+ * competing for. Nothing we could say does that job.
  *
  * `icon` names map to lucide-react in app/page.tsx. Monochrome Quantum Navy,
  * never Electric — that stays reserved for the CTA.
  */
 export const OFFER = {
-  heading: "The free 30-minute build call",
-  intro: "Thirty minutes, on a call, screen shared. Here is exactly what happens.",
+  heading: "Thirty minutes. We pull your numbers, not our slides.",
+  intro: "Screen shared. Here is exactly what happens.",
   steps: [
     {
       icon: "lightbulb",
-      label: "What you have in mind",
-      body: "You talk, we listen, and we write it down as you say it. Most people arrive with the shape of the thing rather than a spec, and that is the right amount to arrive with. The half hour is for turning it into something buildable.",
+      label: "Your call log",
+      body: "We start with your actual phone records. How many calls came in last month, how many went unanswered, and when they happened. You will have a real count in the first ten minutes.",
     },
     {
       icon: "target",
-      label: "What it has to do",
-      body: "Then we get specific about the job. Who it is for, what has to happen when somebody lands on it, and what counts as it working. A site that looks right and does nothing is the most expensive thing you can buy.",
+      label: "Your estimates",
+      body: "How many went out, how many closed, and what happened to the rest. Most shops have never counted the third number, and it is usually the biggest one.",
     },
     {
       icon: "search",
-      label: "What the searches return",
-      body: "Then we look at what the searches for what you sell return — the ones somebody runs when they do not have your name yet, only your trade and their town — and you see who is collecting those people.",
+      label: "Where you rank in every town",
+      body: "Then we search what your customers search — service and town, the way somebody types it when they do not have your name yet — for every town you drive to. You see who is collecting those people right now.",
     },
     {
       icon: "map",
-      label: "The build, costed and dated",
-      body: "Then we map it. What it takes, what it costs, and the date it goes live. First draft inside a week. A real number and a real date — not a range.",
+      label: "What it costs to fix",
+      body: "Then we price it. What it takes, what it costs, and the date it goes live. Real numbers, not a range.",
     },
   ],
   closer:
-    "You keep the recording and the plan whether you hire us or not. There is no pitch on this call. If what you want does not need us, we will tell you that, and that will be the end of it.",
+    "You keep the recording and the numbers whether you hire us or not. There is no pitch on this call. If your problem turns out to be something else, we will tell you that, and it will be a short call.",
   /**
    * Risk reversal, and the only promise on this page with a consequence
-   * attached. Written against FIRST_DRAFT_TIMEFRAME so it cannot drift from
-   * the FAQ answer and step 04, which promise the same week.
+   * attached. Written against FIRST_TOWNS_TIMEFRAME so it cannot drift from
+   * the FAQ answer and step 04, which promise the same fortnight.
+   *
+   * THE CONSEQUENCE IS THE DEPOSIT, NOT THE BUILD. The previous version of
+   * this page promised a free build if a draft slipped, which was a survivable
+   * exposure against a one-off site. Against a twelve-month agreement it is
+   * not — "the build is free" would put the whole first year at risk of a
+   * two-week slip caused by a client who took ten days to send us their town
+   * list. The deposit is a real consequence, it is the money he has actually
+   * parted with at that point, and it is one we can honour without argument.
    *
    * The terms that make this enforceable — when the clock starts, what counts
-   * as a draft, what "free" refunds, and when the clock pauses — are in TERMS
-   * in lib/legal.ts under "The seven-day first draft". Do not ship this line
+   * as live, what is refunded, and when the clock pauses — are in TERMS in
+   * lib/legal.ts under "The two-week first towns". Do not ship this line
    * without that section: an unqualified refund promise is the one claim here
    * that could not be defended.
    */
-  guarantee: `First draft in your hands within ${FIRST_DRAFT_TIMEFRAME}, or the build is free.`,
+  guarantee: `Your first towns live within ${FIRST_TOWNS_TIMEFRAME}, or you do not pay the deposit.`,
 } as const;
 
 /**
- * Ordered by how loudly each objection blocks the sale: price first, then the
- * three beliefs that keep this particular buyer on a site that half-works
- * (it is nearly new / my developer could bolt it on / we do reply), then the rest.
+ * Ordered by how loudly each objection blocks the sale.
+ *
+ * THE BURNED-BEFORE OBJECTION LEADS, ahead of price. This buyer has been sold
+ * something vague by an agency that then disappeared, and until that is dealt
+ * with he is not reading the price answer, he is waiting to catch us. Answering
+ * it first, and answering it with the dashboard rather than with reassurance,
+ * is the single highest-leverage line on this page.
+ *
+ * Price is second, because it is the next thing he wants. Then the beliefs that
+ * keep him where he is — the office manager handles it, an answering service
+ * would do, we are busy anyway — then the rest.
  */
 /**
  * Raw list. Entries carrying a `requires` value drop out of OBJECTIONS below
@@ -608,77 +691,90 @@ const ALL_OBJECTIONS: readonly {
   requires?: string;
 }[] = [
   {
-    q: "What does a site like this cost?",
-    // Anchors on value rather than apologising for the number. A hedged price
-    // answer invites negotiation; a flat one invites the value conversation.
-    //
-    // The range follows the floor immediately and deliberately. A floor quoted
-    // alone gets read as the price, and every quote above it then feels like
-    // an upsell.
-    requires: PRICE_FLOOR,
-    a: `Builds start at ${PRICE_FLOOR}. Most land between ${PRICE_FLOOR} and ${PRICE_CEILING}, depending on how much the site has to do. That is a real number, not an opening position we negotiate up from. The call is free and there is nothing attached to it — and if your job is smaller than that, we will say so.`,
+    // FIRST, DELIBERATELY. See the note above — this is the objection that is
+    // actually in the room, and the only answer that moves it is one he can
+    // verify himself in ninety days. Reassurance would confirm his suspicion.
+    q: "I have paid for marketing before and nothing happened.",
+    a: "Probably true, and it is the reason most of these calls go nowhere. Here is the difference you can check rather than take on faith: you get a screen with four numbers on it — leads in, how fast each one was answered, how many booked, what it cost. If those numbers are not moving in ninety days, you will know in ninety days, not whenever you finally get around to asking for a report. Most agencies avoid that screen on purpose. Ask the last one why you never had it.",
   },
   {
-    q: "Can we pay in stages?",
+    // Anchors on value rather than apologising for the number. The monthly
+    // leads because that is how he buys trucks; the total follows once, for
+    // the minority who pay cash. A hedged answer invites negotiation, and
+    // there is no room to negotiate a fixed-scope product.
+    q: "What does it cost?",
+    requires: PRICE_DEPOSIT,
+    a: `${PRICE_DEPOSIT} down and ${PRICE_MONTHLY} for twelve months. Or ${PRICE_UPFRONT} up front if you would rather own it outright. After the first year it is ${PRICE_RENEWAL} to keep it running. That is the price, not an opening position we negotiate down from. Against one recovered job a month at your average ticket, you can do that arithmetic faster than I can.`,
+  },
+  {
     // Sits directly under the price because a payment worry is the very next
     // thought after a number, and making somebody hunt for the answer in a
     // different part of the page is how a solvable objection becomes an exit.
     //
-    // Our own instalments, never a lender. "Pay in stages" rather than
+    // Our own instalments, never a lender. "Split the deposit" rather than
     // "financing available" is deliberate: the second phrase implies a credit
     // product and carries stated-terms obligations we have no reason to take on.
+    q: "Can the deposit be split?",
     requires: PAYMENT_TERMS,
     a: `${PAYMENT_TERMS} No interest, no third party and no credit check — it is our invoice, split.`,
   },
   {
+    // The commitment objection, and it is a real one for somebody who has been
+    // locked into a contract by an agency before. Answering it plainly costs
+    // nothing and removes the reason to stall.
+    q: "Can I stop after a year?",
+    requires: PRICE_RENEWAL,
+    a: `Yes. Year one is twelve months because that is how long it takes to build out every town page and run the automation through a full season, heating and cooling both. After that it is month to month at ${PRICE_RENEWAL}. Nothing to cancel by certified letter.`,
+  },
+  {
+    q: "My office manager handles the website.",
+    a: "Then she has a job already, and this is not it. Nobody on a five-person office staff has time to write a page for every town you serve, or to remember which estimates went cold in March. That is not a knock on her. It is a knock on expecting a person to do a system's job while the phones are ringing.",
+  },
+  {
+    // The nearest substitute he can actually buy, so it gets the most specific
+    // answer. Concede the part that is true — refusing to would cost more
+    // credibility than the objection itself — then name the four things it
+    // does not do.
+    q: "Could I not just get an answering service?",
+    a: "For the calls, partly, and if that is all you want then get one and keep your money. What an answering service does not do is chase your dead estimates, renew your maintenance plans, email the customer list already sitting in your system, or put you on the map in the five towns you are invisible in. It also costs you every month forever without ever building you anything you own.",
+  },
+  {
+    // The seasonal objection, and the one most likely to produce a "call me in
+    // September" that never happens. The answer has to make summer the
+    // deadline rather than the reason to wait.
+    q: "We are already busy. I do not need more leads in July.",
+    a: "Nobody does. July is not the problem — October through March is, when the trucks sit and you start doing arithmetic on who you can keep on. The maintenance plans and the tune-up campaigns are what fill that window, and they get built in summer or they do not exist in winter. Starting this in October is starting it a season late.",
+  },
+  {
     // Every prospect is thinking this and almost nobody in the category
-    // answers it. Concede the case where it is true — refusing to would cost
-    // more credibility than the objection itself — then move to the part the
+    // answers it. Concede the case where it is true, then move to the part the
     // tools genuinely do not do.
     q: "Could I not just use AI to build this?",
-    a: "You can, and for a simple brochure site you probably should — the tools are genuinely good now, and we will tell you so if that is your situation. What they do not do is answer at 11:47 PM, work out which enquiries are worth your Tuesday, and put those into your calendar. That is not a page. It is a set of questions written for what you sell and how you price it, wired into your inbox and your diary.",
+    a: "You can build pages with it, and they will be decent. What the tools do not do on their own is pick up a call you missed at 11:20 while you were on a roof, work out which of your estimates went quiet, and keep doing it every day for a year without anybody remembering to. That is not a page. It is a set of questions written for what you sell and how you price it, wired into your phone and your calendar.",
   },
   {
-    // The defining objection for someone who has already paid for a site once.
-    // Agree with the premise, then move the argument one step downstream.
-    q: "We only had this site built two years ago.",
-    a: "Then it was probably built correctly for what it was asked to do, which was to exist and to look right. That is the brief almost every website gets, and yours may well have met it. The brief nobody gave it was to handle a buyer at midnight without you. Two years is not old for a website — it is old for a website that has never been asked to do anything except sit there.",
-  },
-  {
-    q: "Could my developer not just add that?",
-    a: "For the auto-reply, yes, and if that is all you want then have them do it and keep the money. What is harder to bolt on is the part that decides which enquiries are worth your Tuesday, because that is not a plugin — it is a set of questions written specifically for what you sell and how you price it, and then the judgement about what to do with each answer. If your developer wants to build that, we will happily tell them on the call exactly how we would do it.",
-  },
-  {
-    q: "We do reply — just not at midnight.",
-    a: "Of course, and nobody is suggesting you should be awake. That is the entire point of building the thing that is. The question is not whether you reply, it is what has already happened by the time you do. If a competitor's site asked that person a sensible question at 11:48 and yours acknowledged receipt, you are replying into a conversation that started without you.",
-  },
-  {
-    q: "Can you not just fix the contact form?",
-    a: "Sometimes, and we will say so on the call if it is true — occasionally the whole problem is one broken form handler and it is a small job. More often the form is working perfectly and doing precisely what it was built to do, which is the problem. We would rather tell you it is a small fix and do a small fix than sell you a rebuild you did not need.",
-  },
-  {
-    q: "How long does a build take?",
+    q: "How long does it take?",
     requires: BUILD_TIMEFRAME,
-    // The draft number leads because it is the one that changes a decision.
-    // The build number follows in the same breath so nobody discovers it
-    // later and feels sold to.
-    a: `First draft in your hands within ${FIRST_DRAFT_TIMEFRAME}. The finished build is ${BUILD_TIMEFRAME.toLowerCase()}. We will give you a real date on the call, not a range.`,
+    // The fast number leads because it is the one that changes a decision.
+    // The full build follows in the same breath so nobody discovers it later
+    // and feels sold to.
+    a: `Your first towns are live inside ${FIRST_TOWNS_TIMEFRAME}. The full build is ${BUILD_TIMEFRAME.toLowerCase()}. You get a real date on the call, not a range.`,
   },
   {
     // Named, deliberately. At this scale the founder's name is the strongest
     // trust device available and it costs nothing — an anonymous "we" on a
-    // page asking for a high-ticket commitment invites the reader to wonder
+    // page asking for a twelve-month commitment invites the reader to wonder
     // how many people are actually behind it.
     q: "Who actually does the work?",
-    a: `Othniel Grant. I run ${COMPANY.name} from Kingston, and I build the sites. There is no account manager relaying messages to a subcontractor you never meet — you will be talking to the person doing the work, which is also why we cannot take many projects at once.`,
+    a: `Othniel Grant. I run ${COMPANY.name} and I do the builds. There is no account manager relaying messages to a subcontractor you never meet — you will be talking to the person doing the work, which is also why we cannot take many of these on at once.`,
   },
   {
     q: "Where are you based?",
-    // Selling high-ticket into overseas markets from Kingston invites the
-    // "offshore, therefore cheap" assumption. Meet it head on rather than
-    // leaving the reader to draw it themselves.
+    // Selling into the US from Kingston invites the "offshore, therefore
+    // cheap" assumption. Meet it head on rather than leaving the reader to
+    // draw it themselves.
     requires: MARKETS,
-    a: `Kingston, Jamaica. We work with clients in ${MARKETS}. Worth saying plainly: we are not an offshore shop competing on price. Our rates are what they are because of the work. Most of our clients have never been to our office and do not need to be — everything runs over video and shared documents, and you will always know exactly who is building your site.`,
+    a: `Kingston, Jamaica. We work with clients in ${MARKETS}. Worth saying plainly: we are not an offshore shop competing on price. Our rates are what they are because of the work. Most of our clients have never been to our office and do not need to be — everything runs over video and shared documents, and you will always know exactly who is building your system.`,
   },
 ];
 
@@ -696,42 +792,46 @@ export const OBJECTIONS = ALL_OBJECTIONS.filter(
  * unfalsifiable claim on a page that has been careful not to make any.
  *
  * This states a promise the page ALREADY makes in the offer closer, which
- * costs the reader nothing to test and is true the moment they book: they
- * keep the plan whether or not they hire us.
+ * costs the reader nothing to test and is true the moment he books: he keeps
+ * his own numbers whether or not he hires us.
  */
 export const TRUST_BADGE = {
-  headline: "You keep the plan either way",
+  headline: "You keep the numbers either way",
   sub: "No pitch · no obligation",
 } as const;
 
 export const FINAL_CTA = {
-  heading: "Tell us what you want built, and what it should do at midnight.",
+  heading: "Find out what your phone cost you last month.",
   subhead:
-    "Thirty minutes on a call. It costs nothing. You leave with a real number and a real date, whether you hire us or not.",
+    "Thirty minutes, screen shared. You leave with your real missed-call count, where you rank in every town you serve, and a price. Yours to keep whether you hire us or not.",
 } as const;
 
 /**
  * The signature element. One orchestrated moment, nothing else animated.
  *
- * Same enquiry, twice. The first card is the one that went into the queue and
- * died there; the second is the same minute with a site that answered.
+ * Same call, twice. The first card is the one that rang out and went to a
+ * competitor; the second is the same minute with something answering.
+ *
+ * The unanswered card deliberately carries no name — that is the whole point
+ * of it. He cannot lose a customer he was never told about, which is why this
+ * loss has never appeared in any number he looks at.
  */
 export const NOTIFICATION_CARDS = {
   unanswered: {
-    source: "Contact form",
-    stamp: "11:47 PM",
-    title: "New enquiry — kitchen refit, Norbrook",
-    body: "Auto-reply sent: “Thank you for your message, we will be in touch shortly.” Opened by you at 9:40 AM.",
-    status: "They hired whoever answered first",
+    source: "Missed call",
+    stamp: "11:20 AM",
+    title: "No answer — Fairview, (555) 018-0142",
+    body: "Rang four times. No voicemail left. No callback made. Nothing logged anywhere you look.",
+    status: "He called the next result",
   },
   answered: {
-    source: "Your website",
-    stamp: "11:47 PM",
-    title: "Enquiry qualified — kitchen refit, Norbrook",
-    body: "Asked what room, what timeline, and roughly what they are working with. All three answered. Serious buyer.",
-    status: "Call booked for Tuesday, 10:00 AM",
+    source: "Your system",
+    stamp: "11:20 AM",
+    title: "Texted back in 40 seconds — Fairview",
+    body: "Asked what the unit is doing and when somebody can be there. Both answered. Condenser, today if possible.",
+    status: "Booked for 3:00 PM",
   },
-  caption: "Same enquiry. Same minute. That is the whole difference.",
+  caption: "Same call. Same minute. That is the whole difference.",
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -750,9 +850,12 @@ export const NOTIFICATION_CARDS = {
  */
 const REQUIRED_VALUES: Record<string, string> = {
   PRIMARY_DOMAIN,
-  PRICE_FLOOR,
-  PRICE_CEILING,
+  PRICE_DEPOSIT,
+  PRICE_MONTHLY,
+  PRICE_UPFRONT,
+  PRICE_RENEWAL,
   BUILD_TIMEFRAME,
+  FIRST_TOWNS_TIMEFRAME,
   MARKETS,
   PAYMENT_TERMS,
   CALENDLY_URL,
