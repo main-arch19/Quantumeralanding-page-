@@ -77,7 +77,7 @@ export default async function BookedPage({
         {claimed && (
           <div className="mt-10 rounded-card border border-line bg-paper p-5 sm:p-6">
             <p className="eyebrow text-electric/70">
-              {DISCOUNT_PERCENT}% off deposit · claimed
+              {DISCOUNT_PERCENT}% off build · claimed
             </p>
             <p className="mt-3 font-mono text-h2 font-bold tracking-[0.04em] text-navy">
               {DISCOUNT_CODE}

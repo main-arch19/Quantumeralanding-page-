@@ -101,7 +101,7 @@ export const TERMS: LegalDocument = {
     {
       heading: "Pricing",
       paragraphs: [
-        `The price stated on this page is the price: a deposit, then a monthly payment for twelve months, or a single payment up front, with a lower monthly after the first year to keep the system running. The exact figures are the ones shown on this page at the time you enquire, and we confirm them in writing before any work begins. Any illustrative arithmetic on this page — average tickets, missed-call counts, recovery rates — describes what is typical in the trade and is offered for you to check against your own records. It is not a claim about your business and not a promise of a result.`,
+        `The figure on this page is a starting price, not a quote. What a build costs depends on how many towns and services it covers, and we give you a fixed figure and a fixed date in writing before any work begins. Payment can be split into stages: that is our own invoice divided up, with no lender, no interest and no credit check involved, and it is not a credit agreement. Any illustrative arithmetic on this page — average tickets, missed-call counts, recovery rates — describes what is typical in the trade and is offered for you to check against your own records. It is not a claim about your business and not a promise of a result.`,
       ],
     },
     {
@@ -114,16 +114,16 @@ export const TERMS: LegalDocument = {
       // both directions: when the clock starts, what counts as delivery, and
       // what exactly is refunded. All three are stated below.
       //
-      // THE CONSEQUENCE IS THE DEPOSIT, NOT THE YEAR. An earlier version of
-      // this page promised a free build if a draft slipped, which was
-      // survivable against a one-off site and is not against a twelve-month
-      // agreement. Keep these terms and OFFER.guarantee in lib/content.ts
-      // saying the same thing.
+      // THE CONSEQUENCE IS THE DEPOSIT, NOT THE BUILD. An earlier version of
+      // this page promised a free build if a draft slipped, which put the whole
+      // project behind a two-week slip the client could cause himself. Keep
+      // these terms and OFFER.guarantee in lib/content.ts saying the same
+      // thing.
       heading: "The two-week first towns",
       paragraphs: [
         `We promise your first town pages live within two weeks, or you do not pay the deposit. Here is exactly what that means, so that neither of us has to argue about it later.`,
         `The two weeks are calendar days and they start when the deposit clears, not when the call happens. "Live" means pages for the towns and services we agreed on the call, published on your domain and reachable by anybody who types the address, with your missed-call text-back switched on and working. It does not mean every town you serve — the full build takes six weeks and that is what the rest of it is for.`,
-        `If we miss that deadline, your deposit is returned in full and you owe nothing for it. You keep whatever we have built. If you choose to carry on, the monthly payments start from the date the first towns actually go live rather than the date we agreed.`,
+        `If we miss that deadline, your deposit is returned in full and you owe nothing for it. You keep whatever we have built. If you choose to carry on, the remaining stage payments shift to run from the date the first towns actually go live rather than the date we agreed.`,
         `The clock pauses while we are waiting on you — for your town and service list, for access to your domain, for the phone number we are texting from, or for a decision we cannot make on your behalf. It restarts when the thing we asked for arrives. We will tell you in writing each time it pauses, on the day, so that the count is never a surprise at the end.`,
       ],
     },

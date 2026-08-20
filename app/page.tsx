@@ -144,10 +144,11 @@ export default function LandingPage() {
 
               {/* The qualification filter. Set in the display face and rules
                   off, so it reads as a stated fact rather than a third line
-                  of argument. Leads with the monthly, never the total — see
-                  PRICE_UPFRONT in lib/content.ts. Omitted entirely while the
-                  price constants are placeholders: a hero that names no number
-                  is weaker than this, but one printing "[FIGURE]" is broken. */}
+                  of argument. Names the floor and the stages together — a
+                  lump sum alone prices out a buyer who thinks in payments.
+                  Omitted entirely while PRICE_FLOOR is a placeholder: a hero
+                  that names no number is weaker than this, but one printing
+                  "[FIGURE]" is broken. */}
               {HERO_PRICE_READY && (
                 <p className="mt-5 border-l-2 border-electric pl-4 font-display text-lead font-bold text-navy">
                   {HERO.priceLine}

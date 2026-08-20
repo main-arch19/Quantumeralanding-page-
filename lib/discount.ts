@@ -1,5 +1,5 @@
 /**
- * The exit offer — 10% off the deposit, claimed on the way out.
+ * The exit offer — 10% off the build, claimed on the way out.
  *
  * This is the page's second capture, aimed at somebody who has already decided
  * to leave.
@@ -10,12 +10,11 @@
  * missed-call count he came here to find out about and mentions the discount
  * second, as a reason to do it now rather than as the offer itself.
  *
- * WHAT THE 10% APPLIES TO CHANGED. It used to come off a one-off setup fee.
- * The product is now a deposit plus twelve monthly payments, so the discount
- * applies to the DEPOSIT only, and DISCOUNT_TERMS says so in those words. It
- * must not be allowed to read as 10% off the monthly — that would be a
- * different and much larger promise than the one we intend to honour, and
- * app/actions.ts quotes these terms verbatim into the claimant's email.
+ * WHAT THE 10% APPLIES TO. Builds are quoted individually from a floor and
+ * paid in stages, so the discount comes off the QUOTED BUILD PRICE — the
+ * figure agreed on the call — and DISCOUNT_TERMS says so in those words.
+ * app/actions.ts quotes these terms verbatim into the claimant's email, so
+ * anything ambiguous here is a promise we have already sent in writing.
  *
  * Copy lives here rather than in lib/content.ts because content.ts is the
  * page's argument — the narrative, the proof, the objections — and it is
@@ -37,12 +36,12 @@ export const DISCOUNT_PERCENT = 10;
  * costs nothing and settles both.
  */
 export const DISCOUNT_TERMS =
-  "10% comes off the deposit on one agreement, applied to the figure we quote you on the call. It does not apply to the monthly, and it does not stack with another offer.";
+  "10% comes off the build price on one project, applied to the figure we quote you on the call. It does not stack with another offer.";
 
 export const DISCOUNT_COPY = {
   eyebrow: "Before you go",
   heading: "Want the number without the call?",
-  body: "Leave us four lines and we will pull your missed-call count and where you rank in the towns you serve, and send it over. No call needed. If it turns out to be a small number, you will have saved yourself thirty minutes — and if you do go ahead, 10% comes off the deposit.",
+  body: "Leave us four lines and we will pull your missed-call count and where you rank in the towns you serve, and send it over. No call needed. If it turns out to be a small number, you will have saved yourself thirty minutes — and if you do go ahead, 10% comes off the build.",
   button: "Send me the number",
   sending: "Sending…",
   /** The dismiss. Named plainly — a coy "no thanks" that hides the cost is a dark pattern. */
@@ -117,4 +116,4 @@ export const DISCOUNT_FIELDS = [
  * and cannot come apart from it — whoever opens the lead in the CRM sees the
  * claim either way.
  */
-export const DISCOUNT_MARKER = `[${DISCOUNT_PERCENT}% deposit discount claimed — code ${DISCOUNT_CODE}]`;
+export const DISCOUNT_MARKER = `[${DISCOUNT_PERCENT}% build discount claimed — code ${DISCOUNT_CODE}]`;

@@ -41,9 +41,14 @@
  * implementation detail he does not care about, and naming it converts a system
  * he is buying into software he could go price himself.
  *
- * PRICE IS LED BY THE MONTHLY. $4,000 down and $2,400/month is how he thinks
- * about buying anything. $12,000 is available to anyone who prefers it, and it
- * is never the first figure stated.
+ * PRICE IS A FLOOR, PAID IN STAGES. Builds start from PRICE_FLOOR and are
+ * quoted individually, because scope really does move with the number of towns
+ * and services. He thinks in payments rather than lump sums — that is how he
+ * buys trucks — so the floor is never stated without the stages beside it.
+ *
+ * "Pay in stages" means our own invoice, split. Never "financing available":
+ * that implies a credit product and carries stated-terms obligations. See the
+ * note on PAYMENT_TERMS.
  */
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -95,34 +100,24 @@ export const PRIMARY_DOMAIN =
 export const CONTACT_EMAIL = "main@quantumerasolutions.com";
 
 /**
- * The deposit, and the first figure a price-conscious buyer sees.
+ * The floor, and the first figure a price-conscious buyer sees.
  *
- * THE PRICE IS FIXED, NOT A RANGE. It used to be a floor with a ceiling quoted
- * beside it, because the product was a build whose scope moved. This product
- * does not move: the same three parts ship to every client, so a range would
- * invent uncertainty that does not exist and invite a negotiation there is no
- * room for.
+ * THIS IS A FLOOR, NOT A FIXED PRICE. It was briefly a deposit against a fixed
+ * twelve-month agreement, and it is now back to a starting figure because
+ * scope genuinely moves: a contractor serving four towns with three services
+ * is a materially smaller build than one serving nine towns with six, and
+ * quoting them the same number is either leaving money on the table or losing
+ * the smaller job.
+ *
+ * A floor quoted ALONE gets read as the price, and every quote above it then
+ * feels like an upsell. So the objection that names this figure says in the
+ * same breath what moves it — towns and services — and promises a real number
+ * on the call.
  *
  * Interpolated into the hero and the price objection from here, so the two can
  * never disagree.
  */
-export const PRICE_DEPOSIT = "$4,000";
-
-/** The monthly, for twelve months. Always stated with PRICE_DEPOSIT. */
-export const PRICE_MONTHLY = "$2,400/month";
-
-/**
- * The alternative for anyone who would rather not carry a monthly.
- *
- * NEVER THE FIRST FIGURE STATED. This buyer thinks in monthly payments because
- * that is how he buys trucks, and leading with the total prices him out of a
- * decision he would have made on the monthly. It is offered, once, immediately
- * after the monthly, for the minority who pay cash for equipment.
- */
-export const PRICE_UPFRONT = "$12,000";
-
-/** What it costs to keep running after the first twelve months. */
-export const PRICE_RENEWAL = "$1,800/month";
+export const PRICE_FLOOR = "$3,000";
 
 /**
  * How long the FULL build takes — every town page live, every automation
@@ -141,12 +136,18 @@ export const FIRST_TOWNS_TIMEFRAME = "two weeks";
 export const MARKETS = "[MARKETS]";
 
 /**
- * How the deposit splits, if it splits at all, e.g. "Half to start, half when
- * the first towns go live."
+ * How the build is split into stages, e.g. "A third to start, a third when the
+ * first towns go live, the balance on completion."
+ *
+ * THE HERO NOW PROMISES STAGES, so this is no longer optional decoration — it
+ * is the answer that says what the promise actually means. While it is
+ * unfilled the objection is hidden and the hero still says "pay in stages",
+ * which is the one place this page currently makes a claim it does not
+ * immediately substantiate. Fill it before ads run.
  *
  * Our own instalments, never a third-party lender. That keeps this out of
  * consumer-credit advertising rules entirely, which is the whole reason the
- * page says "split the deposit" rather than "financing available" — the second
+ * page says "pay in stages" rather than "financing available" — the second
  * phrase implies a credit product and carries stated-terms obligations.
  *
  * Placeholder until the real split exists, so the guard below hides the
@@ -355,20 +356,28 @@ export const TRUST_LINE: readonly ClientMark[] = [
  * clicks either way, and a lead that was never going to buy costs a call to
  * find out.
  *
- * LEADS WITH THE MONTHLY. Interpolated from PRICE_DEPOSIT and PRICE_MONTHLY so
- * the hero cannot drift from the objection answering the same question further
- * down. Hidden entirely while either is unfilled — see HERO_PRICE_READY.
+ * NAMES THE FLOOR AND THE STAGES TOGETHER. This buyer thinks in monthly
+ * payments because that is how he buys trucks, so a lump sum quoted alone
+ * prices him out of a decision he would otherwise make. "Pay in stages" is
+ * deliberate and is not a euphemism for financing — it is our own invoice
+ * split, with no lender involved. The phrase "financing available" implies a
+ * credit product and carries stated-terms obligations we have no reason to
+ * take on. Do not reintroduce it.
+ *
+ * Interpolated from PRICE_FLOOR so the hero cannot drift from the objection
+ * answering the same question further down. Hidden entirely while unfilled —
+ * see HERO_PRICE_READY.
  */
 export const HERO = {
   h1: "Your phone rang 25 times last month and nobody picked up.",
   subhead:
     "Roughly a quarter of those would have booked. Go pull your call log — the number is sitting in it.",
-  priceLine: `${PRICE_DEPOSIT} down, then ${PRICE_MONTHLY}. ${BUILD_TIMEFRAME} to build.`,
+  priceLine: `Builds start from ${PRICE_FLOOR}, and you can pay in stages. ${BUILD_TIMEFRAME} to build.`,
 } as const;
 
 /** The hero price line renders only once there is a real figure in it. */
 export const HERO_PRICE_READY =
-  isFilled(PRICE_DEPOSIT) && isFilled(PRICE_MONTHLY) && isFilled(BUILD_TIMEFRAME);
+  isFilled(PRICE_FLOOR) && isFilled(BUILD_TIMEFRAME);
 
 /**
  * THE ENQUIRY FORM. One stage, four fields.
@@ -649,13 +658,12 @@ export const OFFER = {
    * attached. Written against FIRST_TOWNS_TIMEFRAME so it cannot drift from
    * the FAQ answer and step 04, which promise the same fortnight.
    *
-   * THE CONSEQUENCE IS THE DEPOSIT, NOT THE BUILD. The previous version of
-   * this page promised a free build if a draft slipped, which was a survivable
-   * exposure against a one-off site. Against a twelve-month agreement it is
-   * not — "the build is free" would put the whole first year at risk of a
-   * two-week slip caused by a client who took ten days to send us their town
-   * list. The deposit is a real consequence, it is the money he has actually
-   * parted with at that point, and it is one we can honour without argument.
+   * THE CONSEQUENCE IS THE DEPOSIT, NOT THE BUILD. An earlier version promised
+   * a free build if a draft slipped. That put the entire project behind a
+   * two-week slip a client could cause himself by taking ten days to send his
+   * town list. The deposit is a real consequence — it is the money he has
+   * actually parted with at that point — and it is one we can honour without
+   * argument.
    *
    * The terms that make this enforceable — when the clock starts, what counts
    * as live, what is refunded, and when the clock pauses — are in TERMS in
@@ -698,33 +706,37 @@ const ALL_OBJECTIONS: readonly {
     a: "Probably true, and it is the reason most of these calls go nowhere. Here is the difference you can check rather than take on faith: you get a screen with four numbers on it — leads in, how fast each one was answered, how many booked, what it cost. If those numbers are not moving in ninety days, you will know in ninety days, not whenever you finally get around to asking for a report. Most agencies avoid that screen on purpose. Ask the last one why you never had it.",
   },
   {
-    // Anchors on value rather than apologising for the number. The monthly
-    // leads because that is how he buys trucks; the total follows once, for
-    // the minority who pay cash. A hedged answer invites negotiation, and
-    // there is no room to negotiate a fixed-scope product.
+    // Anchors on value rather than apologising for the number.
+    //
+    // The floor never appears alone. Quoted by itself it gets read as THE
+    // price, and every quote above it then feels like an upsell — so the same
+    // sentence names what moves it (towns and services) and promises a real
+    // figure on the call. That is also the honest description of the product:
+    // four towns and three services is a materially smaller build than nine
+    // and six.
     q: "What does it cost?",
-    requires: PRICE_DEPOSIT,
-    a: `${PRICE_DEPOSIT} down and ${PRICE_MONTHLY} for twelve months. Or ${PRICE_UPFRONT} up front if you would rather own it outright. After the first year it is ${PRICE_RENEWAL} to keep it running. That is the price, not an opening position we negotiate down from. Against one recovered job a month at your average ticket, you can do that arithmetic faster than I can.`,
+    requires: PRICE_FLOOR,
+    a: `Builds start from ${PRICE_FLOOR}. What yours lands at depends on how many towns you want pages for and how many services you sell — that is genuinely the whole of it, and it is why nobody can quote you honestly without asking. You get a real number and a real date on the call, not a range. If your job is smaller than that floor, we will tell you so.`,
   },
   {
     // Sits directly under the price because a payment worry is the very next
     // thought after a number, and making somebody hunt for the answer in a
     // different part of the page is how a solvable objection becomes an exit.
     //
-    // Our own instalments, never a lender. "Split the deposit" rather than
-    // "financing available" is deliberate: the second phrase implies a credit
-    // product and carries stated-terms obligations we have no reason to take on.
-    q: "Can the deposit be split?",
+    // OUR OWN INSTALMENTS, NEVER A LENDER. "Pay in stages" rather than
+    // "financing available" is deliberate and has now been decided twice: the
+    // second phrase implies a credit product, carries stated-terms obligations
+    // (APR, term, representative example) we have no reason to take on, and is
+    // among the phrases Google Ads looks hardest at on a lead-gen page. If a
+    // real third-party lender is ever added, this answer has to be rewritten
+    // to those disclosure rules rather than edited around.
+    //
+    // Still gated on PAYMENT_TERMS: the hero now promises stages, so this
+    // answer is the one that says what the split actually is. Publishing the
+    // promise without the terms is the half-promise the guard exists to stop.
+    q: "Can I pay in stages?",
     requires: PAYMENT_TERMS,
     a: `${PAYMENT_TERMS} No interest, no third party and no credit check — it is our invoice, split.`,
-  },
-  {
-    // The commitment objection, and it is a real one for somebody who has been
-    // locked into a contract by an agency before. Answering it plainly costs
-    // nothing and removes the reason to stall.
-    q: "Can I stop after a year?",
-    requires: PRICE_RENEWAL,
-    a: `Yes. Year one is twelve months because that is how long it takes to build out every town page and run the automation through a full season, heating and cooling both. After that it is month to month at ${PRICE_RENEWAL}. Nothing to cancel by certified letter.`,
   },
   {
     q: "My office manager handles the website.",
@@ -763,7 +775,7 @@ const ALL_OBJECTIONS: readonly {
   {
     // Named, deliberately. At this scale the founder's name is the strongest
     // trust device available and it costs nothing — an anonymous "we" on a
-    // page asking for a twelve-month commitment invites the reader to wonder
+    // page asking for a four-figure commitment invites the reader to wonder
     // how many people are actually behind it.
     q: "Who actually does the work?",
     a: `Othniel Grant. I run ${COMPANY.name} and I do the builds. There is no account manager relaying messages to a subcontractor you never meet — you will be talking to the person doing the work, which is also why we cannot take many of these on at once.`,
@@ -850,10 +862,7 @@ export const NOTIFICATION_CARDS = {
  */
 const REQUIRED_VALUES: Record<string, string> = {
   PRIMARY_DOMAIN,
-  PRICE_DEPOSIT,
-  PRICE_MONTHLY,
-  PRICE_UPFRONT,
-  PRICE_RENEWAL,
+  PRICE_FLOOR,
   BUILD_TIMEFRAME,
   FIRST_TOWNS_TIMEFRAME,
   MARKETS,
