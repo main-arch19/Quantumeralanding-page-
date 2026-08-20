@@ -144,9 +144,10 @@ export default function LandingPage() {
 
               {/* The qualification filter. Set in the display face and rules
                   off, so it reads as a stated fact rather than a third line
-                  of argument. Omitted entirely while PRICE_FLOOR is a
-                  placeholder — a hero that names no number is weaker than
-                  this, but a hero that prints "[FIGURE]" is broken. */}
+                  of argument. Leads with the monthly, never the total — see
+                  PRICE_UPFRONT in lib/content.ts. Omitted entirely while the
+                  price constants are placeholders: a hero that names no number
+                  is weaker than this, but one printing "[FIGURE]" is broken. */}
               {HERO_PRICE_READY && (
                 <p className="mt-5 border-l-2 border-electric pl-4 font-display text-lead font-bold text-navy">
                   {HERO.priceLine}
@@ -166,7 +167,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ── 11:47 PM / 11:48 PM / 7:15 AM / 11:47 PM × 52 ─────────────── */}
+        {/* ── 11:20 AM / 11:21 AM / 6:40 PM / × 12 months ───────────────── */}
         {NARRATIVE_SECTIONS.map((section, index) => {
           // The first three are one night, told in order. The fourth
           // multiplies that night by a year and is the turn in the argument —

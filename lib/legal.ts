@@ -22,15 +22,15 @@ export const PRIVACY_POLICY: LegalDocument = {
     {
       heading: "What we collect about you",
       paragraphs: [
-        `The form on this page asks for four things: your name, your work email address, a phone or WhatsApp number, and a description of what you want built. That is everything we ask you to type.`,
-        `We use the phone number to reply to you about your project and to arrange the call. If you go on to book a time, the scheduling service also asks for a number of its own, and uses it to send you a reminder.`,
+        `The form on this page asks for four things: your name, your work email address, a cell number, and how many trucks you run and which towns you cover. That is everything we ask you to type.`,
+        `We use the phone number to call you back about your business and to arrange the call. If you go on to book a time, the scheduling service also asks for a number of its own, and uses it to send you a reminder.`,
         `We also record the advertising parameters attached to your visit (such as utm_source, utm_campaign, utm_term and gclid). These tell us which advertisement and which search term brought you here. They contain no personal information about you.`,
       ],
     },
     {
       heading: "Why we collect it",
       paragraphs: [
-        `We use your details for one purpose: to reply to you about the project you described, and to arrange the call if you want one. That may be by email, by phone or by WhatsApp, on the number you gave us. That is the whole of it. You can tell us to stop at any time and we will.`,
+        `We use your details for one purpose: to reply to you about the business you described, and to arrange the call if you want one. That may be by email or by phone, on the number you gave us. That is the whole of it. You can tell us to stop at any time and we will.`,
         `We do not sell your information. We do not share it with advertisers or data brokers, and we do not add you to any list beyond replying to what you sent.`,
       ],
     },
@@ -76,20 +76,20 @@ export const TERMS: LegalDocument = {
     {
       heading: "What this page offers",
       paragraphs: [
-        `This page offers a free 30-minute build call. It is genuinely free and there is no obligation attached to it. You keep the call recording and the written plan whether or not you go on to hire us.`,
+        `This page offers a free 30-minute call. It is genuinely free and there is no obligation attached to it. You keep the call recording, the figures we pull with you and the written plan whether or not you go on to hire us.`,
       ],
     },
     {
       heading: "What the call is",
       paragraphs: [
-        `On the call we talk through what you want built and what it has to do, look at what the searches for your services return, and set out what we would build and what it would cost.`,
-        `The plan is our professional opinion based on a 30-minute conversation. It is not a guarantee of any particular result. If we think what you want does not need us, we will tell you so — that is a legitimate outcome of the call and it happens.`,
+        `On the call we go through your own call records and estimate figures with you, search what your customers search in each town you serve, and set out what we would build and what it would cost.`,
+        `Any figures we arrive at on the call are worked out from the information you give us and from searches run in front of you. They describe what has already happened in your business. They are not a forecast, and nothing on this page or on the call is a guarantee of any particular result. If we think your problem is something we do not fix, we will tell you so — that is a legitimate outcome of the call and it happens.`,
       ],
     },
     {
       heading: "Who it is for",
       paragraphs: [
-        `This is written for established businesses that already have a website which is not producing the enquiries it should. If you do not have a website yet, this particular page is not written for you — say so by email and we will point you somewhere more useful.`,
+        `This is written for established residential HVAC companies running their own trucks, typically eight or more, that are losing calls and estimates they should be winning. If that is not your situation, this particular page is not written for you — say so by email and we will point you somewhere more useful.`,
       ],
     },
     {
@@ -101,24 +101,30 @@ export const TERMS: LegalDocument = {
     {
       heading: "Pricing",
       paragraphs: [
-        `Any figures discussed on this page or on the call are indicative starting points, not quotes. A real quote follows a real conversation about scope, and we give you a fixed date and figure in writing before any work begins.`,
+        `The price stated on this page is the price: a deposit, then a monthly payment for twelve months, or a single payment up front, with a lower monthly after the first year to keep the system running. The exact figures are the ones shown on this page at the time you enquire, and we confirm them in writing before any work begins. Any illustrative arithmetic on this page — average tickets, missed-call counts, recovery rates — describes what is typical in the trade and is offered for you to check against your own records. It is not a claim about your business and not a promise of a result.`,
       ],
     },
     {
-      // The page promises "first draft within seven days, or the build is
-      // free". That is a refund obligation, so it needs terms — an
+      // The page promises "first towns live within two weeks, or you do not
+      // pay the deposit". That is a refund obligation, so it needs terms — an
       // unqualified refund promise is the one claim on this page that could
       // not be defended, and the exact thing the ASA and Google Ads object to.
       //
       // Three things have to be pinned down or the promise is unenforceable in
       // both directions: when the clock starts, what counts as delivery, and
-      // what "free" refunds. All three are stated below.
-      heading: "The seven-day first draft",
+      // what exactly is refunded. All three are stated below.
+      //
+      // THE CONSEQUENCE IS THE DEPOSIT, NOT THE YEAR. An earlier version of
+      // this page promised a free build if a draft slipped, which was
+      // survivable against a one-off site and is not against a twelve-month
+      // agreement. Keep these terms and OFFER.guarantee in lib/content.ts
+      // saying the same thing.
+      heading: "The two-week first towns",
       paragraphs: [
-        `We promise a first draft within seven days or the build is free. Here is exactly what that means, so that neither of us has to argue about it later.`,
-        `The seven days are calendar days and they start when the deposit clears, not when the call happens. A first draft means a working site you can open in a browser and click through, laid out with your own content in it — not a picture of a design, and not a template with somebody else's words. It will not be finished; that is what the rest of the build is for.`,
-        `If we miss that deadline, you pay nothing for the build and any deposit you have paid is returned in full. You keep the draft.`,
-        `The clock pauses while we are waiting on you — for content, for access to your domain or hosting, or for a decision we cannot make on your behalf. It restarts when the thing we asked for arrives. We will tell you in writing each time it pauses, on the day, so that the count is never a surprise at the end.`,
+        `We promise your first town pages live within two weeks, or you do not pay the deposit. Here is exactly what that means, so that neither of us has to argue about it later.`,
+        `The two weeks are calendar days and they start when the deposit clears, not when the call happens. "Live" means pages for the towns and services we agreed on the call, published on your domain and reachable by anybody who types the address, with your missed-call text-back switched on and working. It does not mean every town you serve — the full build takes six weeks and that is what the rest of it is for.`,
+        `If we miss that deadline, your deposit is returned in full and you owe nothing for it. You keep whatever we have built. If you choose to carry on, the monthly payments start from the date the first towns actually go live rather than the date we agreed.`,
+        `The clock pauses while we are waiting on you — for your town and service list, for access to your domain, for the phone number we are texting from, or for a decision we cannot make on your behalf. It restarts when the thing we asked for arrives. We will tell you in writing each time it pauses, on the day, so that the count is never a surprise at the end.`,
       ],
     },
     {

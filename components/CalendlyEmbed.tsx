@@ -90,13 +90,13 @@ export function CalendlyEmbed({
     // ═════════════════════════════════════════════════════════════════════
     // ⚠  CUSTOM QUESTION ORDER ON THE CALENDLY EVENT TYPE.
     //
-    //    a1  Lead ID              (hidden)
-    //    a2  What you want built  (hidden, prefilled from the form)
+    //    a1  Lead ID            (hidden)
+    //    a2  Trucks and towns    (hidden, prefilled from the form)
     //
     //    The old a2 was Website URL and a3 was a REQUIRED "what do you want
-    //    the site to do?" question. The form now asks that itself, so the
-    //    Calendly-side question must be DELETED — leaving it asks the same
-    //    person the same thing twice.
+    //    the site to do?" question. The form now asks for trucks and towns
+    //    itself, so the Calendly-side question must be DELETED — leaving it
+    //    asks the same person the same thing twice.
     //
     //    a1/a2/a3 map POSITIONALLY to the custom questions as they are
     //    ordered on the event type. Reorder or insert a question in the

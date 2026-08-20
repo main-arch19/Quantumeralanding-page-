@@ -6,10 +6,10 @@ import { NOTIFICATION_CARDS } from "@/lib/content";
 /**
  * The signature element, and the only animation on the page.
  *
- * The hero shows the failed lookup alone — 11:47 PM, Signal Amber, sitting
+ * The hero shows the missed call alone — 11:20 AM, Signal Amber, sitting
  * inert. At the end of the mechanism section the same card is restated and the
  * answered card arrives beneath it, stamped the same minute. Seeing the
- * identical search at the identical minute twice, once dead and once answered,
+ * identical call at the identical minute twice, once lost and once booked,
  * IS the product demonstration. Nothing else on this page moves.
  */
 
