@@ -8,7 +8,7 @@ import { DISCOUNT_CODE, DISCOUNT_PERCENT, DISCOUNT_TERMS } from "@/lib/discount"
 import logo from "@/public/qes-logo.png";
 
 export const metadata: Metadata = {
-  title: "Enquiry received — pick a time",
+  title: "Got it — pick a time",
   robots: { index: false, follow: false },
 };
 
@@ -60,15 +60,15 @@ export default async function BookedPage({
       </header>
 
       <main className="mx-auto max-w-4xl px-5 py-12 sm:px-8 sm:py-16">
-        <p className="eyebrow text-electric/70">Enquiry received</p>
+        <p className="eyebrow text-electric/70">Got it</p>
 
         <h1 className="display mt-3 max-w-[20ch] text-h1 text-navy">
           {firstName ? `Thanks, ${firstName}.` : "Thanks — we have it."}
         </h1>
 
         <p className="mt-5 max-w-[38rem] text-lead text-ink/75">
-          Your enquiry is with us and a real person is reading it, not a filter.
-          We will come back to you by email either way.
+          It is with us and a real person is reading it, not a filter. We will
+          come back to you either way.
         </p>
 
         {/* The code, in the two places it can be: on screen now, and in the
@@ -77,7 +77,7 @@ export default async function BookedPage({
         {claimed && (
           <div className="mt-10 rounded-card border border-line bg-paper p-5 sm:p-6">
             <p className="eyebrow text-electric/70">
-              {DISCOUNT_PERCENT}% off setup · claimed
+              {DISCOUNT_PERCENT}% off deposit · claimed
             </p>
             <p className="mt-3 font-mono text-h2 font-bold tracking-[0.04em] text-navy">
               {DISCOUNT_CODE}
@@ -98,10 +98,11 @@ export default async function BookedPage({
             Want to skip the back and forth? Pick a time now.
           </h2>
           <p className="mt-5 max-w-[38rem] text-body text-ink/70">
-            Thirty minutes on a call is worth a week of emails. We will go
-            through what you want built, what it takes, and what it costs — with
-            a real figure and a real date. No pitch. You keep the plan either
-            way.
+            Thirty minutes on a call is worth a week of emails. We go through
+            your own call log and estimate numbers, search the towns you serve
+            so you can see who is collecting those customers, and price the fix
+            — a real figure and a real date. No pitch. You keep the numbers
+            either way.
           </p>
         </div>
 
@@ -123,8 +124,8 @@ export default async function BookedPage({
               <p className="mt-2 text-base text-[#7a4700]/85">
                 Set <code className="font-mono">NEXT_PUBLIC_CALENDLY_URL</code>{" "}
                 to your event link. Until then this page cannot book anyone —
-                enquiries still arrive by email, but you will be scheduling them
-                by hand.
+                leads still arrive by email, but you will be scheduling them by
+                hand.
               </p>
             </div>
           )}

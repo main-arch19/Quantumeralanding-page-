@@ -283,7 +283,7 @@ export async function submitEnquiry(
 // THE EXIT OFFER
 //
 // A second capture for somebody who is already leaving, in exchange for 10%
-// off setup.
+// off the deposit.
 //
 // It asks for the same four fields as the main form. That was not always so —
 // the main form asked for five, and the shorter ask was this offer's whole
@@ -625,7 +625,7 @@ function buildDiscountEmail(
     ["Name", claim.name],
     ["Email", claim.email],
     ["Phone", claim.phone || "— not given"],
-    ["Discount", `${DISCOUNT_PERCENT}% off setup · code ${DISCOUNT_CODE}`],
+    ["Discount", `${DISCOUNT_PERCENT}% off deposit · code ${DISCOUNT_CODE}`],
   ];
 
   const trackingRows = Object.entries(tracking);
@@ -653,7 +653,7 @@ function buildDiscountEmail(
 
   const html = `
     <div style="font-family:ui-sans-serif,system-ui,sans-serif;color:#12121A;max-width:640px">
-      <h2 style="font-size:18px;color:#0A0E52;margin:0 0 4px">Discount claim — ${DISCOUNT_PERCENT}% off setup</h2>
+      <h2 style="font-size:18px;color:#0A0E52;margin:0 0 4px">Discount claim — ${DISCOUNT_PERCENT}% off deposit</h2>
       <p style="font-size:13px;color:#6b7280;margin:0 0 16px">Caught by the exit offer. They have the code already.</p>
       <table style="border-collapse:collapse;width:100%;font-size:14px">
         ${rows
@@ -722,7 +722,7 @@ function buildClaimerEmail(claim: DiscountClaim): {
     "",
     `Here is your code: ${DISCOUNT_CODE}`,
     "",
-    `It takes ${DISCOUNT_PERCENT}% off the setup fee. ${DISCOUNT_TERMS}`,
+    `It takes ${DISCOUNT_PERCENT}% off the deposit. ${DISCOUNT_TERMS}`,
     "",
     "Nothing else is needed from you now. We have what you sent about the",
     "project and a real person is reading it — we will come back by email",
@@ -746,7 +746,7 @@ function buildClaimerEmail(claim: DiscountClaim): {
         )}</p>
       </div>
 
-      <p style="font-size:15px;margin:0 0 20px">It takes ${DISCOUNT_PERCENT}% off the setup fee. ${escapeHtml(
+      <p style="font-size:15px;margin:0 0 20px">It takes ${DISCOUNT_PERCENT}% off the deposit. ${escapeHtml(
         DISCOUNT_TERMS
       )}</p>
 

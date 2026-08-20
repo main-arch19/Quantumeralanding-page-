@@ -1,11 +1,21 @@
 /**
- * The exit offer — 10% off setup, claimed on the way out.
+ * The exit offer — 10% off the deposit, claimed on the way out.
  *
- * This is the page's second capture. The main form asks for five fields from
- * somebody who is still interested; this asks for three from somebody who has
- * already decided to leave. Every field here was weighed against that: a
- * visitor with one foot out the door does not fill in a phone number, and
- * asking for one costs the whole claim.
+ * This is the page's second capture, aimed at somebody who has already decided
+ * to leave.
+ *
+ * THE DISCOUNT IS THE MECHANISM; THE NUMBER IS THE HOOK. A percentage off,
+ * offered on its own, is exactly the marketing move this audience distrusts —
+ * it reads as a margin that was there all along. So the copy leads with the
+ * missed-call count he came here to find out about and mentions the discount
+ * second, as a reason to do it now rather than as the offer itself.
+ *
+ * WHAT THE 10% APPLIES TO CHANGED. It used to come off a one-off setup fee.
+ * The product is now a deposit plus twelve monthly payments, so the discount
+ * applies to the DEPOSIT only, and DISCOUNT_TERMS says so in those words. It
+ * must not be allowed to read as 10% off the monthly — that would be a
+ * different and much larger promise than the one we intend to honour, and
+ * app/actions.ts quotes these terms verbatim into the claimant's email.
  *
  * Copy lives here rather than in lib/content.ts because content.ts is the
  * page's argument — the narrative, the proof, the objections — and it is
@@ -27,14 +37,14 @@ export const DISCOUNT_PERCENT = 10;
  * costs nothing and settles both.
  */
 export const DISCOUNT_TERMS =
-  "10% comes off the setup fee on one project, applied to the figure we quote you on the call. It does not stack with another offer.";
+  "10% comes off the deposit on one agreement, applied to the figure we quote you on the call. It does not apply to the monthly, and it does not stack with another offer.";
 
 export const DISCOUNT_COPY = {
   eyebrow: "Before you go",
-  heading: "Take 10% off the setup.",
-  body: "You came here to find out what a new site would cost. Leave us three lines and we will come back with a real number — with 10% already taken off the setup.",
-  button: "Claim my 10%",
-  sending: "Claiming…",
+  heading: "Want the number without the call?",
+  body: "Leave us four lines and we will pull your missed-call count and where you rank in the towns you serve, and send it over. No call needed. If it turns out to be a small number, you will have saved yourself thirty minutes — and if you do go ahead, 10% comes off the deposit.",
+  button: "Send me the number",
+  sending: "Sending…",
   /** The dismiss. Named plainly — a coy "no thanks" that hides the cost is a dark pattern. */
   dismiss: "No thanks",
   closeLabel: "Close this offer",
@@ -47,18 +57,20 @@ export const DISCOUNT_COPY = {
  * the modal can render them with the identical markup the main form uses —
  * identity, contact, then the field that takes thought.
  *
+ * The `name` keys are the argument names of the Supabase RPC. Renaming one
+ * here without renaming it in ENQUIRY_FIELDS and app/actions.ts breaks every
+ * insert on this path.
+ *
  * This asked for three and now asks for four. Phone was left out on the
- * reasoning that a visitor with one foot out the door will not fill one in,
- * and that a claim never made is worth less than a claim without a number.
+ * reasoning that a visitor with one foot out the door will not fill one in.
  * That trade was reversed deliberately: a lead we can only email cannot be
- * called, and this offer exists to produce leads, not form submissions.
+ * called, and on a page whose argument is that whoever picks up first wins the
+ * job, an uncallable lead is the wrong thing to optimise for.
  *
- * Business name stays out of both forms — it is recoverable on the call.
- *
- * The two forms now ask for exactly the same things. What still separates them
- * is the discount and the moment: this one appears to somebody already
- * leaving. If claim volume drops after adding the phone field, that is the
- * field to reconsider first.
+ * The last field asks for trucks and towns because the town list is what we
+ * actually need to run the search this offer promises. Without it the reply is
+ * generic, and a generic reply to somebody who asked for their own number is
+ * worse than not answering at all.
  */
 export const DISCOUNT_FIELDS = [
   {
@@ -66,7 +78,7 @@ export const DISCOUNT_FIELDS = [
     label: "Your name",
     type: "text",
     autoComplete: "name",
-    placeholder: "Marcia Bennett",
+    placeholder: "Dale Whitaker",
     required: true,
   },
   {
@@ -74,24 +86,24 @@ export const DISCOUNT_FIELDS = [
     label: "Work email",
     type: "email",
     autoComplete: "email",
-    placeholder: "you@yourbusiness.com",
+    placeholder: "you@yourcompany.com",
     required: true,
   },
   {
     name: "phone",
-    label: "Phone / WhatsApp",
+    label: "Cell",
     type: "tel",
     autoComplete: "tel",
-    placeholder: "876 555 0123",
+    placeholder: "(555) 018-4420",
     required: true,
   },
   {
     name: "description",
-    label: "What you want built",
+    label: "How many trucks you run, and which towns you cover",
     type: "textarea",
     autoComplete: "off",
     placeholder:
-      "A few lines is plenty — what the business does, and what you want the new site to do for it.",
+      "A line is plenty — how many trucks, and the towns you will drive to.",
     required: true,
   },
 ] as const;
@@ -105,4 +117,4 @@ export const DISCOUNT_FIELDS = [
  * and cannot come apart from it — whoever opens the lead in the CRM sees the
  * claim either way.
  */
-export const DISCOUNT_MARKER = `[${DISCOUNT_PERCENT}% setup discount claimed — code ${DISCOUNT_CODE}]`;
+export const DISCOUNT_MARKER = `[${DISCOUNT_PERCENT}% deposit discount claimed — code ${DISCOUNT_CODE}]`;
