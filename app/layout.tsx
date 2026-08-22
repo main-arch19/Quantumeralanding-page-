@@ -32,7 +32,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Your Phone Rang 25 Times Last Month. Nobody Picked Up.",
+  title: "Custom HVAC Websites, Built for Every Town You Serve",
   description: HERO.subhead,
   // Ad-only traffic. This must not compete with the main site in organic
   // search. Note: robots.txt must NOT block AdsBot-Google, or ads get

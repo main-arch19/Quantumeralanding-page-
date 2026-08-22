@@ -40,9 +40,9 @@ export const DISCOUNT_TERMS =
 
 export const DISCOUNT_COPY = {
   eyebrow: "Before you go",
-  heading: "Want the number without the call?",
-  body: "Leave us four lines and we will pull your missed-call count and where you rank in the towns you serve, and send it over. No call needed. If it turns out to be a small number, you will have saved yourself thirty minutes — and if you do go ahead, 10% comes off the build.",
-  button: "Send me the number",
+  heading: "Want the numbers without the call?",
+  body: "Leave us four lines and we will send over your missed-call count, where you rank in each town you serve, and what a custom site covering all of them would cost. No call needed. If it turns out to be a small number, you will have saved yourself thirty minutes — and if you do go ahead, 10% comes off the build.",
+  button: "Send me the numbers",
   sending: "Sending…",
   /** The dismiss. Named plainly — a coy "no thanks" that hides the cost is a dark pattern. */
   dismiss: "No thanks",

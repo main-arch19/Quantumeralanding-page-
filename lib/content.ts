@@ -30,12 +30,28 @@
  * claim and the only version of this argument that survives Ads review. Do not
  * convert any of it into a flat assertion about his business.
  *
- * NEVER LEAD WITH THE WEBSITE. The product is a lead-to-booked-job system in
- * three parts: a page for every town crossed with every service, an automation
- * layer that answers and follows up, and a dashboard with four numbers on it.
- * The site is one third of one part. A headline that makes it the product sells
- * the cheapest component of the offer and invites comparison against every
- * web shop in his market.
+ * LEAD WITH THE CUSTOM BUILD, NEVER WITH "A WEBSITE". This rule used to read
+ * NEVER LEAD WITH THE WEBSITE, on the reasoning that the site is one third of
+ * one part and a headline naming it sells the cheapest component. That
+ * reasoning still holds for a GENERIC website — but the ads bid on HVAC
+ * website-design terms, and a page that never says the word scores badly for
+ * relevance and reads as a bait-and-switch to somebody who clicked an ad for
+ * exactly that.
+ *
+ * The resolution is that "a website" and "a custom site with a page for every
+ * town you serve, crossed with every service you sell" are different products.
+ * The first is a commodity and invites him to price it against every web shop
+ * in his market. The second is the thing the forty-truck outfit is beating him
+ * with, and no template shop sells it.
+ *
+ * So: the custom, per-town build leads. What is still forbidden is a bare "we
+ * build websites" headline, and letting the site appear anywhere without the
+ * system attached to it — the answering, the follow-up and the dashboard are
+ * what make the price make sense.
+ *
+ * The product is still a lead-to-booked-job system in three parts: the custom
+ * per-town pages, an automation layer that answers and follows up, and a
+ * dashboard with four numbers on it.
  *
  * NEVER NAME THE UNDERLYING TOOLS. Outcomes only. The stack is an
  * implementation detail he does not care about, and naming it converts a system
@@ -188,14 +204,15 @@ export type PrimaryProof = {
   /** Client company name. Appears in the section heading. */
   client: string;
   /**
-   * ONE paragraph, and it must be an UPGRADE story — this page is read by
-   * someone who already has a website, and a "they had nothing, then they had
-   * a site" story argues nothing to them. They already cleared that bar.
+   * ONE paragraph, and it has to carry a number this reader can compare
+   * against his own. He is a contractor, so the story that lands is a
+   * contractor's: how many towns they showed up in before and after, what
+   * happened to the calls nobody was catching, what that did to booked jobs.
    *
-   * What their old site did and how long they had it. How enquiries arrived
-   * and what happened to them — how long a reply actually took, and how many
-   * went cold. What we changed. The specific number after, over a stated time
-   * window. If you do not have that number, do not launch this page.
+   * How many towns they served and how many they ranked in. What was
+   * happening to missed calls and dead estimates. What we built. The specific
+   * number after, over a stated time window. If you do not have that number,
+   * do not launch this page.
    */
   story: string;
   quote: {
@@ -210,7 +227,7 @@ export type PrimaryProof = {
 export const PRIMARY_PROOF: PrimaryProof = {
   client: "[CLIENT NAME]",
   story:
-    "[ONE PARAGRAPH. What their old site was and how long they had it. How enquiries reached them, how long a reply actually took, and how many went cold. What we changed. The specific number after, over a stated time window.]",
+    "[ONE PARAGRAPH. How many towns they served and how many they ranked in. What was happening to missed calls and unchased estimates. What we built. The specific number after, over a stated time window.]",
   quote: {
     text: "[ONE SENTENCE FROM THE CLIENT, WITH A NUMBER IN IT.]",
     name: "[NAME]",
@@ -220,7 +237,7 @@ export const PRIMARY_PROOF: PrimaryProof = {
 };
 
 /** Rendered as the proof section's H2. Kept here so page.tsx holds no copy. */
-export const PROOF_HEADING = `${PRIMARY_PROOF.client} already had a website. Here is what changed when it started answering.`;
+export const PROOF_HEADING = `${PRIMARY_PROOF.client} was invisible in every town but one. Here is what changed.`;
 
 /**
  * Whether the proof section renders at all.
@@ -350,14 +367,25 @@ export const TRUST_LINE: readonly ClientMark[] = [
  * because a variant that lives outside the codebase is a variant nobody ever
  * tests. Swap `h1`/`subhead` to run one; change nothing else.
  *
- *   A — LOSS   (shipped) names the money before it names us. This is the
- *              angle the audience research points at: what makes him buy is a
- *              specific number showing money he is losing right now.
+ *   D — BUILD  (shipped) names the custom per-town site first and the missed
+ *              call second. Shipped because the ads bid on website-design
+ *              terms and the page has to echo them — see the docblock rule at
+ *              the top of this file. The subhead carries the money, because a
+ *              build-only headline throws away the thing that actually closes.
+ *   A — LOSS   names the money before it names us, and was shipped until the
+ *              ad-relevance problem forced the change. Still the purest
+ *              expression of what the audience research points at: what makes
+ *              him buy is a specific number showing money he is losing now.
+ *              Worth testing against D whenever ad spend allows.
  *   B — SPEED  sells the race rather than the loss. Softer, because it asks
  *              him to accept a mechanism before he has accepted a cost.
  *   C — PROOF  uses the bigger outfit across town as the wedge. Highest
  *              variance — it lands hardest on the ones it lands on, and reads
  *              as an insult to anyone who does not feel outranked.
+ *
+ * A: "Your phone rang 25 times last month and nobody picked up."
+ *    sub: "Roughly a quarter of those would have booked. Go pull your call
+ *    log — the number is sitting in it."
  *
  * B: "The first contractor to call back gets the job. It is usually not you."
  *    sub: "Not because you are slower. Because you were on a roof and he has
@@ -388,9 +416,9 @@ export const TRUST_LINE: readonly ClientMark[] = [
  * see HERO_PRICE_READY.
  */
 export const HERO = {
-  h1: "Your phone rang 25 times last month and nobody picked up.",
+  h1: "A custom website for every town you serve, and a system that answers.",
   subhead:
-    "Roughly a quarter of those would have booked. Go pull your call log — the number is sitting in it.",
+    "Your phone rang about 25 times last month and nobody picked up. Roughly a quarter of those would have booked. Go pull your call log — the number is sitting in it.",
   priceLine: `Builds start from ${PRICE_FLOOR}, and you can pay in stages. ${BUILD_TIMEFRAME} to build.`,
 } as const;
 
@@ -432,7 +460,7 @@ export const ENQUIRY_COPY = {
   heading: "Tell us what you are working with",
   subheading:
     "Four questions, one minute. A person reads it and calls you back — not a robot.",
-  button: "Get my missed-call number",
+  button: "Show me my site and my numbers",
   sending: "Sending…",
   consent: "One reply, about this only. No list. No drip.",
 } as const;
@@ -552,11 +580,12 @@ export const NARRATIVE_SECTIONS = [
 ] as const;
 
 export const MECHANISM = {
-  heading: "We build the thing that picks up.",
+  heading: "A custom site that sells, and a system that answers.",
   body: [
-    "Start with what is actually broken, because it is not your website. Your phone rings and it lands on a person — you, your office manager, whoever is closest. When that person is busy, the call is gone. That is the whole failure, and a nicer homepage does not touch it.",
+    "Start with the build, because it is where the towns come from. You get a custom site — not a template with your logo dropped into it — with a page for every town you serve, crossed with every service you sell. Six towns and four services is twenty-four pages, each one written for what that town actually searches for. No template does that, because a template does not know your towns, your services or your pricing.",
+    "That matters because of where you are invisible. You serve six towns and you have one page, so you show up in the town your shop sits in and nowhere else. That is why the forty-truck outfit outranks you everywhere — not a better company, more pages. When somebody in Fairview searches for AC repair in Fairview, there is finally something of yours to find.",
+    "But a site that only sits there is half a job, and the half that costs you money is the other one. Your phone rings and it lands on a person — you, your office manager, whoever is closest. When that person is busy, the call is gone. A nicer homepage does not touch that.",
     "So something else answers. A call you could not take gets a text back inside a minute, before he has redialled anybody. Every new lead, from wherever it came, gets a real response in under sixty seconds. Not an acknowledgement. A question about what the unit is doing and when somebody can come look.",
-    "Then the towns. You serve six and you have one page, so you show up in the town your shop sits in and you are invisible in the other five. That is why the forty-truck outfit outranks you everywhere. Every town you serve gets its own page, crossed with every service you sell. When somebody in Fairview searches for AC repair in Fairview, there is something of yours to find.",
     "Then the follow-up nobody has time for. Estimates that did not close get chased on a schedule. Maintenance plans get renewal notices before they lapse. The customer list already sitting in your system — the thousands of names that have never been emailed once — gets a tune-up reminder in September and again in March. Finished jobs get asked for a review while the customer is still happy.",
     "None of that requires you to remember it. That is the point of it.",
     "Then the dashboard, which is one screen. How many leads came in. How fast each one got answered. How many booked. What it cost. Four numbers. If they are bad you will see it in October, not next June.",
@@ -590,9 +619,13 @@ export const MECHANISM = {
  */
 export const INCLUDED = {
   eyebrow: "Included in every build",
-  heading: "What runs while you are on a call.",
+  heading: "What you get, and what it does while you are on a call.",
   intro: "Not a feature list. This is the part that works when you cannot.",
   items: [
+    {
+      label: "A custom page for every town and every service",
+      body: "Not a template with your logo on it. Six towns and four services is twenty-four pages, each written for what that town searches — twenty-four ways to be found instead of one.",
+    },
     {
       label: "A missed call texts back",
       body: "Inside a minute, before he has dialled the next result. This one alone pays for most of what this costs.",
@@ -600,10 +633,6 @@ export const INCLUDED = {
     {
       label: "Every lead answered in under sixty seconds",
       body: "Phone, form, wherever it came from. A real question about the unit and the timeline, not a thank-you note.",
-    },
-    {
-      label: "A page for every town you serve",
-      body: "Crossed with every service you sell. Six towns and four services is twenty-four ways to be found instead of one.",
     },
     {
       label: "Estimates get chased",
@@ -666,8 +695,8 @@ export const OFFER = {
     },
     {
       icon: "map",
-      label: "What it costs to fix",
-      body: "Then we price it. What it takes, what it costs, and the date it goes live. Real numbers, not a range.",
+      label: "The build, costed and dated",
+      body: "Then we map the site — which towns, which services, how many pages — and price it. What it takes, what it costs, and the date it goes live. Real numbers, not a range.",
     },
   ],
   closer:
@@ -758,8 +787,18 @@ const ALL_OBJECTIONS: readonly {
     a: `${PAYMENT_TERMS} No interest, no third party and no credit check — it is our invoice, split.`,
   },
   {
+    // Kept in the reader's own words — it is a real objection and it is also
+    // the vocabulary the ads bid on. The answer concedes her competence and
+    // moves the argument to scale, because the failure is not effort.
     q: "My office manager handles the website.",
-    a: "Then she has a job already, and this is not it. Nobody on a five-person office staff has time to write a page for every town you serve, or to remember which estimates went cold in March. That is not a knock on her. It is a knock on expecting a person to do a system's job while the phones are ringing.",
+    a: "Then she has a job already, and this is not it. Writing and maintaining a page for every town crossed with every service you sell is twenty-odd pages of work before anybody has answered a phone, and then it has to be kept current. Nobody on a five-person office staff has time for that on top of dispatch. That is not a knock on her. It is a knock on expecting a person to do a system's job while the phones are ringing.",
+  },
+  {
+    // Puts the exact phrase somebody typed into Google onto the page, in the
+    // one place it is a genuine question rather than a keyword drop. Somebody
+    // who clicked a website-design ad wants to know he is getting a website.
+    q: "Do I get an actual website, or just software?",
+    a: "An actual website, and you own it. A custom build — your photos, your services, your pricing, your towns — not a template with your logo dropped in and not a page rented from us that disappears if you leave. The software is what sits behind it answering calls and chasing estimates, and it is the part that makes the site earn its cost instead of just sitting there looking correct.",
   },
   {
     // The nearest substitute he can actually buy, so it gets the most specific
@@ -837,9 +876,9 @@ export const TRUST_BADGE = {
 } as const;
 
 export const FINAL_CTA = {
-  heading: "Find out what your phone cost you last month.",
+  heading: "See the site you would get, and what your phone cost you last month.",
   subhead:
-    "Thirty minutes, screen shared. You leave with your real missed-call count, where you rank in every town you serve, and a price. Yours to keep whether you hire us or not.",
+    "Thirty minutes, screen shared. You leave with your real missed-call count, where you rank in every town you serve, and what the build costs. Yours to keep whether you hire us or not.",
 } as const;
 
 /**
