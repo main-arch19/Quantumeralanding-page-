@@ -57,7 +57,26 @@
 
 export const COMPANY = {
   name: "Quantum Era Solutions",
-  location: "Kingston, Jamaica",
+  /**
+   * One line, for the two footers. Kept short so it does not wrap on a phone,
+   * where it sits inline after the copyright and the company name.
+   */
+  location: "Mill Creek, WA",
+  /**
+   * The full mailing address, for the privacy policy and anywhere else a
+   * complete address is required.
+   *
+   * THIS IS A MAILING ADDRESS AND NOTHING MORE. It is a mail-forwarding suite,
+   * not a staffed office, so no copy anywhere on this page may describe it as
+   * one. "Our office", "visit us", "drop by" and "our Washington team" are each
+   * a claim we cannot support, and the address is the single most checkable
+   * thing we publish — anyone who looks it up finds a mail depot. Naming it as
+   * the business address is the whole of what it supports.
+   */
+  addressLines: [
+    "15117 Main St, Suite 205 Unit #177",
+    "Mill Creek, WA 98012",
+  ],
   email: "main@quantumerasolutions.com",
   year: 2026,
 } as const;
@@ -782,11 +801,16 @@ const ALL_OBJECTIONS: readonly {
   },
   {
     q: "Where are you based?",
-    // Selling into the US from Kingston invites the "offshore, therefore
-    // cheap" assumption. Meet it head on rather than leaving the reader to
-    // draw it themselves.
+    // Answers with the address and then moves immediately to how the work
+    // actually runs, which is the part a buyer can verify for himself on the
+    // first call.
+    //
+    // DO NOT reintroduce "our office" here. An earlier version of this answer
+    // said clients "have never been to our office and do not need to be",
+    // which was fine when it described a real one. Against a mail-forwarding
+    // address it asserts a place that does not exist. See COMPANY.addressLines.
     requires: MARKETS,
-    a: `Kingston, Jamaica. We work with clients in ${MARKETS}. Worth saying plainly: we are not an offshore shop competing on price. Our rates are what they are because of the work. Most of our clients have never been to our office and do not need to be — everything runs over video and shared documents, and you will always know exactly who is building your system.`,
+    a: `Mill Creek, Washington. We work with clients in ${MARKETS}. Everything runs over video and shared documents, which is how most of our clients prefer it — nobody has ever needed to sit in a room with us to get a system built. You will always know exactly who is building yours, because you will be talking to him directly.`,
   },
 ];
 

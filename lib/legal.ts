@@ -60,9 +60,13 @@ export const PRIVACY_POLICY: LegalDocument = {
       ],
     },
     {
+      // The FULL address, not COMPANY.location. This is the one place on the
+      // page where a complete address genuinely matters — it is where a
+      // deletion or access request would actually be sent, and a city alone
+      // gives a reader no way to send one.
       heading: "Contact",
       paragraphs: [
-        `${COMPANY.name}, ${COMPANY.location}. Questions about this policy go to ${COMPANY.email}.`,
+        `${COMPANY.name}, ${COMPANY.addressLines.join(", ")}. Questions about this policy go to ${COMPANY.email}.`,
       ],
     },
   ],
@@ -133,9 +137,18 @@ export const TERMS: LegalDocument = {
         // Name the domain only once it is real. Interpolating it unguarded put
         // the literal text "[PRIMARY-DOMAIN]" into published legal copy, and on
         // a staging deploy it would name a throwaway hostname instead.
+        // NO CHOICE-OF-LAW CLAUSE. This used to name the laws of Jamaica, which
+        // stopped matching the address the page publishes. Naming a
+        // jurisdiction we have not taken advice on would be worse than naming
+        // none, so this says how a dispute starts and stops there.
+        //
+        // This is not the same as having a correct clause. Selling four-figure
+        // builds to US customers with no stated jurisdiction leaves it to
+        // default rules if it ever matters. Worth one conversation with a
+        // lawyer before volume picks up.
         isFilled(PRIMARY_DOMAIN)
-          ? `The content of this page is owned by ${COMPANY.name}. Client names appear with permission. This page is published at ${PRIMARY_DOMAIN} and these terms are governed by the laws of Jamaica.`
-          : `The content of this page is owned by ${COMPANY.name}. Client names appear with permission. These terms are governed by the laws of Jamaica.`,
+          ? `The content of this page is owned by ${COMPANY.name}. Client names appear with permission. This page is published at ${PRIMARY_DOMAIN}. If a dispute arises we will work with you in good faith to resolve it directly, before either of us involves anybody else.`
+          : `The content of this page is owned by ${COMPANY.name}. Client names appear with permission. If a dispute arises we will work with you in good faith to resolve it directly, before either of us involves anybody else.`,
       ],
     },
   ],

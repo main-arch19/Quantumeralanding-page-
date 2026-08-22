@@ -9,8 +9,13 @@ import { LegalModals } from "./LegalModals";
  * launching is a leak like any other — the visitor leaves the page and lands
  * in an empty compose window, which converts worse than the form does.
  *
- * Location plus a domain-matched address carries the legitimacy signal the
- * phone number used to carry, without promising a channel we cannot answer.
+ * The city plus a domain-matched email carries the legitimacy signal the phone
+ * number used to carry, without promising a channel we cannot answer.
+ *
+ * COMPANY.location is the SHORT form — city and state only. The full street
+ * address lives in COMPANY.addressLines and renders in the privacy policy,
+ * where a complete address is actually useful. Putting it here would wrap onto
+ * three lines on a phone and buy nothing.
  */
 export function Footer() {
   return (
